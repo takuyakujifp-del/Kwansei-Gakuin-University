@@ -1,0 +1,2987 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KG 進学費用シミュレーター｜関西学院大学</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --kit-navy: #0A2240;
+  --kit-blue: #003087;
+  --kit-sky: #2E5FAC;
+  --kit-gold: #8B2131;
+  --kit-gold-l: #C0392B;
+  --kit-green: #0D9B6A;
+  --kit-red: #C0392B;
+  --bg: #F4F6FA;
+  --surface: #FFFFFF;
+  --border: #DDE3EF;
+  --text: #0D1A33;
+  --text-2: #4A5C7A;
+  --text-3: #8294B0;
+  --shadow: 0 2px 16px rgba(10,34,64,0.07);
+  --shadow-md: 0 6px 32px rgba(10,34,64,0.11);
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ─── HEADER ─── */
+.site-header {
+  background: var(--kit-navy);
+  padding: 0;
+  position: sticky; top: 0; z-index: 200;
+}
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  border-bottom: 2px solid #8B2131;
+  max-width: 960px;
+  margin: 0 auto;
+  gap: 12px;
+}
+.kit-logo-area {
+  display: flex; align-items: center; gap: 14px;
+}
+.kit-emblem {
+  width: 42px; height: 42px;
+  background: var(--kit-gold);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900; font-size: 16px;
+  color: var(--kit-navy);
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
+}
+.kit-title-area { flex: 1; }
+.kit-name {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0.03em;
+}
+.kit-subtitle {
+  font-size: 11px;
+  color: rgba(255,255,255,0.48);
+  margin-top: 1px;
+  letter-spacing: 0.05em;
+}
+
+/* ─── PROGRESS STRIP ─── */
+.progress-strip {
+  background: #061830;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.progress-strip::-webkit-scrollbar { display: none; }
+.steps-row {
+  display: flex;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 8px;
+  min-width: max-content;
+}
+.s-tab {
+  flex: 1;
+  min-width: 72px;
+  padding: 9px 4px 8px;
+  text-align: center;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.18s;
+  position: relative;
+}
+.s-tab .s-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 3px;
+  transition: all 0.18s;
+}
+.s-tab .s-label {
+  display: block;
+  font-size: 9.5px;
+  color: rgba(255,255,255,0.45);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.s-tab.active {
+  border-bottom-color: var(--kit-gold);
+}
+.s-tab.active .s-num {
+  background: var(--kit-gold);
+  color: var(--kit-navy);
+}
+.s-tab.active .s-label { color: var(--kit-gold); }
+.s-tab.done .s-num {
+  background: var(--kit-sky);
+  color: white;
+}
+.s-tab.done .s-label { color: rgba(255,255,255,0.6); }
+
+/* ─── MAIN ─── */
+main {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 28px 16px 72px;
+}
+
+/* ─── STEP TITLE ─── */
+.step-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.step-badge {
+  background: var(--kit-navy);
+  color: var(--kit-gold);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+.step-title {
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--kit-navy);
+  line-height: 1.3;
+}
+.step-desc {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-top: 4px;
+}
+
+/* ─── SECTIONS ─── */
+.section { display: none; animation: fadeSlide 0.28s ease; }
+.section.active { display: block; }
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── CARD ─── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 22px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--kit-blue);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-title::before {
+  content: '';
+  width: 3px; height: 14px;
+  background: linear-gradient(180deg, var(--kit-gold), var(--kit-blue));
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ─── FORM ELEMENTS ─── */
+.fg { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.fg:last-child { margin-bottom: 0; }
+.fg label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.fg label .hint { font-weight: 400; color: var(--text-3); margin-left: 4px; font-size: 11px; }
+.input-wrap { position: relative; }
+.input-wrap input { padding-right: 32px; }
+.input-unit {
+  position: absolute; right: 12px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px; color: var(--text-3);
+  pointer-events: none;
+}
+input.num-input, select {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text);
+  background: white;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -moz-appearance: textfield;
+}
+input.num-input:focus, select:focus {
+  border-color: var(--kit-sky);
+  box-shadow: 0 0 0 3px rgba(58,123,213,0.12);
+}
+.field-error input, .field-error select {
+  border-color: var(--kit-red) !important;
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.1) !important;
+}
+.err-msg {
+  display: none;
+  font-size: 12px;
+  color: var(--kit-red);
+  font-weight: 600;
+  padding: 6px 10px;
+  background: rgba(192,57,43,0.06);
+  border: 1px solid rgba(192,57,43,0.2);
+  border-radius: 6px;
+  margin-top: 4px;
+}
+.err-msg::before { content: '⚠ '; }
+.field-error .err-msg { display: block; }
+
+/* ─── TOGGLE ─── */
+.toggle-row { display: flex; gap: 6px; }
+.tog-btn {
+  flex: 1;
+  padding: 10px 8px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: white;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--text-2);
+  transition: all 0.15s;
+  text-align: center;
+}
+.tog-btn.sel {
+  border-color: var(--kit-blue);
+  background: rgba(0,65,168,0.07);
+  color: var(--kit-blue);
+}
+
+/* ─── FACULTY CARDS ─── */
+.faculty-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 500px) { .faculty-grid { grid-template-columns: 1fr; } }
+.fac-card {
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: white;
+}
+.fac-card:hover { border-color: var(--kit-sky); }
+.fac-card.sel-a {
+  border-color: var(--kit-blue);
+  background: rgba(0,65,168,0.05);
+}
+.fac-card.sel-b {
+  border-color: var(--kit-gold);
+  background: rgba(200,150,12,0.05);
+}
+.fac-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.fac-sub { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.fac-fee {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 800;
+}
+.fac-fee.a { color: var(--kit-blue); }
+.fac-fee.b { color: var(--kit-gold); }
+
+/* ─── INFO BOX ─── */
+.info-box {
+  background: rgba(0,65,168,0.04);
+  border: 1px solid rgba(0,65,168,0.12);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.75;
+}
+.info-box.warn {
+  background: rgba(200,150,12,0.06);
+  border-color: rgba(200,150,12,0.25);
+}
+.info-box.green {
+  background: rgba(13,155,106,0.05);
+  border-color: rgba(13,155,106,0.2);
+}
+
+/* ─── EARNER BLOCK ─── */
+.earner-block {
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+.earner-block:last-child { margin-bottom: 0; }
+.earner-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-2);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.earner-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.earner-tag.e1 { background: rgba(0,65,168,0.1); color: var(--kit-blue); }
+.earner-tag.e2 { background: rgba(200,150,12,0.1); color: #8a6500; }
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 500px) { .form-grid-2 { grid-template-columns: 1fr; } }
+.full { grid-column: 1 / -1; }
+
+/* ─── CHECKBOX ─── */
+.chk-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.chk-item:hover { border-color: var(--kit-sky); }
+.chk-item.on {
+  border-color: var(--kit-blue);
+  background: rgba(0,65,168,0.06);
+}
+.chk-item.disabled {
+  background: #f5f7fa;
+  border-color: #dde3ef;
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+.chk-box {
+  width: 20px; height: 20px;
+  border: 2px solid var(--border);
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.chk-item.on .chk-box {
+  background: var(--kit-blue);
+  border-color: var(--kit-blue);
+  color: white;
+}
+.chk-item.disabled .chk-box { background: #e6ebf1; border-color: #cfd8e3; color: transparent; }
+.chk-item.disabled.on .chk-box {
+  background: var(--kit-blue);
+  border-color: var(--kit-blue);
+  color: white;
+}
+.chk-text { font-size: 13px; font-weight: 500; }
+.chk-sub { font-size: 11px; color: var(--text-3); }
+
+/* ─── BUTTONS ─── */
+.btn-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+  justify-content: flex-end;
+}
+.btn {
+  padding: 12px 24px;
+  border-radius: 9px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 700;
+  transition: all 0.16s;
+  letter-spacing: 0.02em;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--kit-navy), var(--kit-blue));
+  color: white;
+  box-shadow: 0 4px 14px rgba(0,30,91,0.3);
+}
+.btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,30,91,0.38); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-secondary {
+  background: white;
+  border: 1.5px solid var(--border);
+  color: var(--text-2);
+}
+.btn-secondary:hover { border-color: var(--kit-sky); color: var(--kit-blue); }
+.btn-gold {
+  background: linear-gradient(135deg, #8a6500, var(--kit-gold));
+  color: white;
+  box-shadow: 0 4px 14px rgba(200,150,12,0.3);
+  width: 100%;
+  padding: 16px;
+  font-size: 15px;
+  margin-top: 14px;
+}
+.btn-gold:hover { transform: translateY(-1px); }
+.btn-ghost {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  margin-top: 10px;
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--text-2);
+  transition: all 0.15s;
+}
+.btn-ghost:hover { border-color: var(--kit-sky); color: var(--kit-blue); }
+
+/* ─── KIT TUITION DISPLAY (Step 2) ─── */
+.tuition-display {
+  background: linear-gradient(135deg, var(--kit-navy) 0%, #003080 100%);
+  border-radius: var(--radius);
+  padding: 24px;
+  color: white;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.tuition-display::after {
+  content: '¥';
+  position: absolute;
+  right: 16px; top: -8px;
+  font-size: 120px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  opacity: 0.04;
+  color: var(--kit-gold);
+  line-height: 1;
+}
+.td-fac-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 14px;
+}
+.td-fee-grid {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 0;
+}
+.td-fee-item {
+  flex: 1;
+  text-align: center;
+  padding: 12px 8px;
+  border-right: 1px solid rgba(255,255,255,0.13);
+}
+.td-fee-item:last-child { border-right: none; }
+.td-fee-label { font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 8px; letter-spacing: 0.03em; }
+.td-fee-val {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(26px, 6vw, 40px);
+  font-weight: 800;
+  color: var(--kit-gold-l);
+  line-height: 1;
+}
+.td-fee-val small { font-size: 14px; font-family: 'Noto Sans JP', sans-serif; font-weight: 700; margin-left: 2px; }
+.td-note { font-size: 10px; color: rgba(255,255,255,0.38); text-align: center; }
+@media (max-width: 460px) {
+  .td-fee-grid { flex-wrap: wrap; }
+  .td-fee-item { flex: 1 1 45%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 10px 4px; }
+  .td-fee-item:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.13); }
+  .td-fee-item:last-child { border-bottom: none; flex: 1 1 100%; }
+}
+
+/* ─── YEAR TABLE (Step 2) ─── */
+.fee-table-wrap { overflow-x: auto; margin-top: 14px; }
+.fee-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.fee-table th {
+  background: var(--bg);
+  padding: 9px 12px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.fee-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(221,227,239,0.5);
+  text-align: center;
+  vertical-align: middle;
+}
+.fee-table tr:last-child td { border-bottom: none; font-weight: 800; background: rgba(0,65,168,0.03); }
+.fee-table td:first-child { text-align: left; font-weight: 600; color: var(--text-2); }
+.no-support-col { color: var(--text-3); }
+.amt-strong { font-weight: 800; font-size: 15px; }
+
+/* ─── RESULT (Step 8) ─── */
+.result-hero {
+  background: linear-gradient(135deg, #0d2a4a, #1a3d6b);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  color: white;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.result-hero::before {
+  content: 'KG';
+  position: absolute;
+  right: 12px; top: -8px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-size: 90px;
+  opacity: 0.04;
+  color: var(--kit-gold);
+  line-height: 1;
+}
+.rh-eyebrow { font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,0.45); text-transform: uppercase; margin-bottom: 10px; }
+.rh-fac { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.85); margin-bottom: 4px; }
+.rh-zone {
+  display: inline-block;
+  padding: 4px 16px;
+  border-radius: 999px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  border: 1.5px solid currentColor;
+  margin: 10px 0;
+}
+.rh-cols {
+  display: flex;
+  gap: 0;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.rh-col { text-align: center; padding: 0 20px; }
+.rh-col + .rh-col { border-left: 1px solid rgba(255,255,255,0.12); }
+.rh-col-label { font-size: 10px; color: rgba(255,255,255,0.45); margin-bottom: 3px; }
+.rh-col-val {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(18px, 4vw, 24px);
+  font-weight: 800;
+  color: var(--kit-gold-l);
+}
+
+/* ─── COMPARE PANEL ─── */
+.compare-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+@media (max-width: 560px) { .compare-panel { grid-template-columns: 1fr; } }
+.cp-card {
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  overflow: hidden;
+}
+.cp-head {
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.cp-head.no-sup { background: #f5f7fa; color: var(--text-3); }
+.cp-head.with-sup { background: rgba(0,65,168,0.07); color: var(--kit-blue); }
+.cp-head.with-full { background: rgba(13,155,106,0.08); color: var(--kit-green); }
+.cp-body { padding: 16px 14px; }
+.cp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 5px 0;
+  border-bottom: 1px dashed rgba(221,227,239,0.6);
+  font-size: 12px;
+}
+.cp-row:last-child { border-bottom: none; font-weight: 800; font-size: 14px; margin-top: 4px; padding-top: 8px; }
+.cp-row-label { color: var(--text-2); }
+.cp-row-val { font-weight: 700; }
+.cp-saving {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 800;
+}
+.cp-saving.blue { background: rgba(0,65,168,0.08); color: var(--kit-blue); }
+.cp-saving.green { background: rgba(13,155,106,0.08); color: var(--kit-green); }
+
+/* ─── YEAR TABLE IN RESULT ─── */
+.yr-table-wrap { overflow-x: auto; }
+.yr-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.yr-table th {
+  padding: 9px 10px;
+  background: var(--bg);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+}
+.yr-table th:first-child { text-align: center; }
+.yr-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid rgba(221,227,239,0.5);
+  text-align: right;
+  vertical-align: middle;
+}
+.yr-table td:first-child { text-align: center; font-weight: 600; color: var(--text-2); }
+.yr-table tr:last-child td { font-weight: 800; background: rgba(0,65,168,0.03); border-bottom: none; }
+.saving-cell { font-weight: 700; color: var(--kit-green); }
+
+/* ─── TOAST ─── */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--kit-red);
+  color: white;
+  padding: 11px 22px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 6px 24px rgba(192,57,43,0.35);
+  z-index: 9999;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ─── RADIO CARDS (asset) ─── */
+.r-cards { display: flex; flex-direction: column; gap: 8px; }
+.r-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.r-card:hover { border-color: var(--kit-sky); }
+.r-card.sel { border-color: var(--kit-blue); background: rgba(0,65,168,0.05); }
+.r-dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.r-card.sel .r-dot { border-color: var(--kit-blue); background: var(--kit-blue); }
+.r-dot::after { content: ''; width: 7px; height: 7px; border-radius: 50%; background: white; opacity: 0; transition: opacity 0.15s; }
+.r-card.sel .r-dot::after { opacity: 1; }
+.r-card-text { font-size: 13px; font-weight: 600; }
+.r-card-sub { font-size: 11px; color: var(--text-3); }
+
+/* ─── pattern choice cards ─── */
+.pattern-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 480px) { .pattern-grid { grid-template-columns: 1fr; } }
+.pat-card {
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-align: center;
+}
+.pat-card:hover { border-color: var(--kit-sky); }
+.pat-card.sel-blue { border-color: var(--kit-blue); background: rgba(0,65,168,0.05); }
+.pat-card.sel-green { border-color: var(--kit-green); background: rgba(13,155,106,0.05); }
+.pat-icon { font-size: 28px; margin-bottom: 10px; }
+.pat-name { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 5px; }
+.pat-card.sel-blue .pat-name { color: var(--kit-blue); }
+.pat-card.sel-green .pat-name { color: var(--kit-green); }
+.pat-desc { font-size: 11px; color: var(--text-3); line-height: 1.6; }
+.pat-badge {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.pat-badge.blue { background: rgba(0,65,168,0.1); color: var(--kit-blue); }
+.pat-badge.green { background: rgba(13,155,106,0.1); color: var(--kit-green); }
+
+/* ─── SUPPORT BREAKDOWN ─── */
+.support-cards { display: flex; flex-direction: column; gap: 10px; }
+.sup-card {
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.sup-card.active-blue { border-color: rgba(0,65,168,0.3); background: rgba(0,65,168,0.03); }
+.sup-card.active-green { border-color: rgba(13,155,106,0.3); background: rgba(13,155,106,0.03); }
+.sup-card.inactive { background: var(--bg); opacity: 0.7; }
+.sup-label-area { flex: 1; }
+.sup-title { font-size: 13px; font-weight: 700; }
+.sup-title.blue { color: var(--kit-blue); }
+.sup-title.green { color: var(--kit-green); }
+.sup-title.gray { color: var(--text-3); }
+.sup-meta { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.sup-amounts { display: flex; gap: 16px; }
+.sup-amount-item { text-align: right; }
+.sup-amount-label { font-size: 10px; color: var(--text-3); }
+.sup-amount-val { font-size: 17px; font-weight: 800; }
+.sup-amount-val.blue { color: var(--kit-blue); }
+.sup-amount-val.green { color: var(--kit-green); }
+.sup-amount-val.gray { color: var(--text-3); }
+
+/* ─── NOTICE ─── */
+.notice-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  font-size: 11px;
+  color: var(--text-2);
+  line-height: 1.85;
+}
+.notice-box p + p { margin-top: 4px; }
+.notice-box a { color: var(--kit-blue); }
+
+/* util */
+.auto-badge {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(0,65,168,0.08);
+  color: var(--kit-blue);
+  margin-left: 6px;
+}
+/* ─── 貸与型ステータスバー（まなびシード準拠） ─── */
+.taiyo-status-bar {
+  display:flex; gap:0;
+  border:1.5px solid var(--border);
+  border-radius:12px; overflow:hidden;
+  margin-bottom:14px;
+}
+.taiyo-status-seg { flex:1; padding:12px 8px; text-align:center; }
+.tss-divider { width:1.5px; background:var(--border); flex-shrink:0; }
+.tss-name { font-size:10px; font-weight:600; color:var(--text-2); margin-bottom:6px; line-height:1.4; }
+.tss-val  { font-size:13px; font-weight:800; line-height:1.3; }
+.tss-sub-detail { display:flex; flex-direction:column; gap:3px; margin-top:6px; }
+.tss-sub-warn { font-size:10px; font-weight:700; color:#b07800; background:rgba(240,165,0,0.15); border-radius:4px; padding:2px 6px; }
+.tss-sub-ok   { font-size:10px; font-weight:700; color:var(--kit-green); background:rgba(13,155,106,0.15); border-radius:4px; padding:2px 6px; }
+.tss-warn-note {
+  font-size:11px; color:#b07800;
+  background:rgba(240,165,0,0.08); border:1px solid rgba(240,165,0,0.25);
+  border-radius:8px; padding:8px 12px; margin-top:12px; line-height:1.7;
+}
+/* ─── 貸与型カード ─── */
+.taiyo-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:4px; }
+@media (max-width:560px) { .taiyo-cards { grid-template-columns:1fr; } }
+.taiyo-card { border:2px solid var(--border); border-radius:12px; padding:16px 12px; text-align:center; }
+.tc-ok   { border-color:var(--kit-green); background:rgba(13,155,106,0.05); }
+.tc-ng   { border-color:var(--border); background:var(--bg); opacity:0.75; }
+.tc-warn { border-color:var(--kit-red); background:rgba(192,57,43,0.06); }
+.tc-warn-yellow { border-color:rgba(240,165,0,0.5); background:rgba(240,165,0,0.07); }
+.tc-name  { font-size:12px; font-weight:700; color:var(--text); margin-bottom:10px; line-height:1.4; }
+.tc-badge { font-size:16px; font-weight:900; padding:6px 0; margin-bottom:8px; }
+.tc-ok   .tc-badge { color:var(--kit-green); }
+.tc-ng   .tc-badge { color:var(--text-3); }
+.tc-warn .tc-badge { color:var(--kit-red); }
+.tc-warn-yellow .tc-badge { color:#b07800; }
+.tc-threshold { font-size:10px; color:var(--text-3); }
+/* 月額 */
+.tc-monthly { margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); }
+.tc-monthly-label { font-size:10px; font-weight:700; color:var(--text-2); letter-spacing:0.5px; margin-bottom:4px; }
+.tc-monthly-range { font-size:16px; font-weight:900; color:var(--kit-blue); line-height:1.2; margin-bottom:4px; }
+.tc-monthly-range.tc-monthly-warn { color:var(--kit-red); }
+.tc-monthly-divider { border-top:1px dashed var(--border); margin:10px 0 4px; }
+.tc-monthly-max-note { font-size:9px; font-weight:600; color:var(--text-3); display:block; margin-top:2px; }
+.tc-monthly-others { font-size:11px; color:var(--kit-blue); font-weight:600; margin-bottom:4px; }
+.tc-monthly-note { font-size:10px; color:var(--text-2); margin-top:3px; line-height:1.6; }
+/* 併給調整ボックス */
+.heikyu-box {
+  background:linear-gradient(135deg,rgba(192,57,43,0.07),rgba(192,57,43,0.04));
+  border:2px solid rgba(192,57,43,0.28); border-radius:14px; padding:18px 20px; margin-top:16px;
+}
+.heikyu-box-head { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+.heikyu-alert { display:inline-block; padding:5px 12px; border-radius:999px; background:rgba(192,57,43,0.14); color:var(--kit-red); font-size:11px; font-weight:800; letter-spacing:0.5px; }
+.heikyu-title { font-size:16px; font-weight:900; color:#a61d18; margin-top:8px; }
+.heikyu-desc  { font-size:12px; color:#7a2a24; line-height:1.8; margin-top:8px; }
+.heikyu-value { font-size:clamp(26px,5vw,38px); line-height:1.1; font-weight:900; color:var(--kit-red); font-family:'Montserrat',sans-serif; text-align:right; white-space:pre-line; }
+.heikyu-subnote { font-size:11px; color:#7a2a24; line-height:1.8; margin-top:10px; }
+.heikyu-meta { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:14px; }
+@media (max-width:560px) { .heikyu-meta { grid-template-columns:1fr; } }
+.heikyu-meta-card { background:rgba(255,255,255,0.7); border:1px solid rgba(192,57,43,0.15); border-radius:10px; padding:12px 14px; }
+.heikyu-meta-label { font-size:10px; color:#99504c; font-weight:700; letter-spacing:0.5px; margin-bottom:6px; }
+.heikyu-meta-value { font-size:13px; color:#5a2a26; font-weight:700; line-height:1.7; }
+/* 計算式ボックス */
+.formula-box { background:#f8f2e8; border:1px solid rgba(200,150,12,0.3); border-radius:10px; padding:14px 18px; margin-bottom:16px; }
+.formula-title { font-size:11px; font-weight:700; color:#7a5500; margin-bottom:8px; }
+.formula-expr  { font-size:13px; font-weight:600; color:#4a3200; font-family:'Courier New',monospace; background:rgba(255,255,255,0.7); padding:8px 12px; border-radius:6px; word-break:break-all; }
+.formula-note  { font-size:10px; color:#9a7030; margin-top:6px; }
+.calc-row-formula { display:grid; grid-template-columns:minmax(110px,max-content) 1fr auto; gap:8px; align-items:baseline; padding:6px 0; border-bottom:1px dashed rgba(208,220,232,0.5); font-size:12px; }
+.calc-row-formula:last-child { border-bottom:none; }
+.cfr-label  { font-weight:600; color:var(--text-2); }
+.cfr-expr   { color:var(--text-2); font-family:'Courier New',monospace; font-size:11px; }
+.cfr-result { font-weight:700; color:var(--text); text-align:right; white-space:nowrap; }
+.calc-row-total .cfr-label, .calc-row-total .cfr-result { color:var(--kit-green); font-size:13px; }
+.deduct-row .cfr-result { color:var(--kit-red); }
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<div class="site-header">
+  <div class="header-top">
+    <div class="kit-logo-area">
+      <div class="kit-emblem">KG</div>
+      <div class="kit-title-area">
+        <div class="kit-name">関西学院大学</div>
+        <div class="kit-subtitle">進学費用シミュレーター</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-strip">
+    <div class="steps-row">
+      <div class="s-tab active" id="tab-1" onclick="goStep(1,false)">
+        <div class="s-num">1</div>
+        <div class="s-label">学部選択</div>
+      </div>
+      <div class="s-tab" id="tab-2" onclick="goStep(2,false)">
+        <div class="s-num">2</div>
+        <div class="s-label">KG学費</div>
+      </div>
+      <div class="s-tab" id="tab-3" onclick="goStep(3,false)">
+        <div class="s-num">3</div>
+        <div class="s-label">家族構成</div>
+      </div>
+      <div class="s-tab" id="tab-4" onclick="goStep(4,false)">
+        <div class="s-num">4</div>
+        <div class="s-label">収入情報</div>
+      </div>
+      <div class="s-tab" id="tab-5" onclick="goStep(5,false)">
+        <div class="s-num">5</div>
+        <div class="s-label">資産・控除</div>
+      </div>
+      <div class="s-tab" id="tab-6" onclick="goStep(6,false)">
+        <div class="s-num">6</div>
+        <div class="s-label">通学・特例</div>
+      </div>
+      <div class="s-tab" id="tab-7" onclick="goStep(7,false)">
+        <div class="s-num">7</div>
+        <div class="s-label">表示設定</div>
+      </div>
+      <div class="s-tab" id="tab-8" onclick="goStep(8,false)">
+        <div class="s-num">8</div>
+        <div class="s-label">試算結果</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- STEP 1: 学部選択 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section active" id="step-1">
+  <div class="step-header">
+    <div class="step-badge">STEP 1</div>
+    <div>
+      <div class="step-title">学部・学科の選択</div>
+      <div class="step-desc">進学を検討している学部・学科を選んでください（2026年度入学生対象）。</div>
+    </div>
+  </div>
+
+  <!-- 文系 -->
+  <div class="card">
+    <div class="card-title">文系学部</div>
+    <div class="faculty-grid">
+      <div class="fac-card" id="fc-theology" onclick="selectFac('theology')">
+        <div class="fac-name">神学部</div>
+        <div class="fac-sub">神学科</div>
+        <div class="fac-fee a">初年度合計 115.5万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+      <div class="fac-card" id="fc-lit" onclick="selectFac('lit')">
+        <div class="fac-name">文学部</div>
+        <div class="fac-sub">文化歴史学科 / 文学言語学科</div>
+        <div class="fac-fee a">初年度合計 115.5万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+      <div class="fac-card" id="fc-soc" onclick="selectFac('soc')">
+        <div class="fac-name">社会学部</div>
+        <div class="fac-sub">社会学科</div>
+        <div class="fac-fee a">初年度合計 115.5万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+      <div class="fac-card" id="fc-law" onclick="selectFac('law')">
+        <div class="fac-name">法学部</div>
+        <div class="fac-sub">法律学科 / 政治学科</div>
+        <div class="fac-fee a">初年度合計 115.5万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+      <div class="fac-card" id="fc-econ" onclick="selectFac('econ')">
+        <div class="fac-name">経済学部</div>
+        <div class="fac-sub">経済学科</div>
+        <div class="fac-fee a">初年度合計 115.5万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+      <div class="fac-card" id="fc-com" onclick="selectFac('com')">
+        <div class="fac-name">商学部</div>
+        <div class="fac-sub">商学科</div>
+        <div class="fac-fee a">初年度合計 115.5万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+      <div class="fac-card" id="fc-psych" onclick="selectFac('psych')">
+        <div class="fac-name">文学部（総合心理科学科）</div>
+        <div class="fac-sub">総合心理科学科</div>
+        <div class="fac-fee a">初年度合計 133.6万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+      <div class="fac-card" id="fc-welfare" onclick="selectFac('welfare')">
+        <div class="fac-name">人間福祉学部</div>
+        <div class="fac-sub">社会福祉・社会起業・人間科学 各学科</div>
+        <div class="fac-fee a">初年度合計 137.1万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+      <div class="fac-card" id="fc-edu" onclick="selectFac('edu')">
+        <div class="fac-name">教育学部</div>
+        <div class="fac-sub">教育学科</div>
+        <div class="fac-fee a">初年度合計 146.8万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+      <div class="fac-card" id="fc-intl" onclick="selectFac('intl')">
+        <div class="fac-name">国際学部</div>
+        <div class="fac-sub">国際学科</div>
+        <div class="fac-fee a">初年度合計 146.3万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+      <div class="fac-card" id="fc-policy" onclick="selectFac('policy')">
+        <div class="fac-name">総合政策学部</div>
+        <div class="fac-sub">総合政策・国際政策・都市政策学科</div>
+        <div class="fac-fee a">初年度合計 149.6万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+      <div class="fac-card" id="fc-policy-med" onclick="selectFac('policy-med')">
+        <div class="fac-name">総合政策学部</div>
+        <div class="fac-sub">メディア情報学科</div>
+        <div class="fac-fee a">初年度合計 149.6万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 理系 -->
+  <div class="card">
+    <div class="card-title">理系学部</div>
+    <div class="faculty-grid">
+      <div class="fac-card" id="fc-sci-math" onclick="selectFac('sci-math')">
+        <div class="fac-name">理学部（数理科学科）</div>
+        <div class="fac-sub">数理科学科</div>
+        <div class="fac-fee" style="color:#0D9B6A;font-size:12px;font-weight:800;margin-top:8px">初年度合計 168.7万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+      <div class="fac-card" id="fc-sci-phys" onclick="selectFac('sci-phys')">
+        <div class="fac-name">理学部（物理・化学）</div>
+        <div class="fac-sub">物理・宇宙学科 / 化学科</div>
+        <div class="fac-fee" style="color:#0D9B6A;font-size:12px;font-weight:800;margin-top:8px">初年度合計 172.7万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+      <div class="fac-card" id="fc-eng" onclick="selectFac('eng')">
+        <div class="fac-name">工学部</div>
+        <div class="fac-sub">機械・電気電子応用・情報工学 等</div>
+        <div class="fac-fee" style="color:#0D9B6A;font-size:12px;font-weight:800;margin-top:8px">初年度合計 172.7万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+      <div class="fac-card" id="fc-life" onclick="selectFac('life')">
+        <div class="fac-name">生命環境学部</div>
+        <div class="fac-sub">生命医科学・環境応用化学 等</div>
+        <div class="fac-fee" style="color:#0D9B6A;font-size:12px;font-weight:800;margin-top:8px">初年度合計 172.7万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+      <div class="fac-card" id="fc-arch" onclick="selectFac('arch')">
+        <div class="fac-name">建築学部</div>
+        <div class="fac-sub">建築学科</div>
+        <div class="fac-fee" style="color:#0D9B6A;font-size:12px;font-weight:800;margin-top:8px">初年度合計 172.7万円
+          <span style="font-size:10px;font-weight:400;color:var(--text-3)">諸費除く</span></div>
+      </div>
+    </div>
+    <div class="err-msg" id="err-fac" style="display:none">学部・学科を選択してください</div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="goS1Next()">KG学費を確認する →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- STEP 2: KIT学費詳細（支援なしの場合）-->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" id="step-2">
+  <div class="step-header">
+    <div class="step-badge">STEP 2</div>
+    <div>
+      <div class="step-title">関西学院大学の学費詳細</div>
+      <div class="step-desc">奨学金等の支援を受けない場合の費用です（2026年度入学生対象）。</div>
+    </div>
+  </div>
+
+  <!-- 動的に学費情報を表示 -->
+  <div id="tuition-info-block"></div>
+
+  <div class="card">
+    <div class="card-title">参考：他の費用について</div>
+    <div class="info-box warn">
+      <strong>⚠ 以下は含まれていません</strong><br>
+      上記の学費には、後援会費・生協出資金・研究雑誌費などその他諸費、教科書代、実習費、下宿代、生活費などは含まれていません。
+      詳細は <a href="https://www.kwansei.ac.jp/campuslife/fees/undergraduate_2026.html" target="_blank" style="color:var(--kit-blue)">関西学院大学 学費ページ</a> をご確認ください。
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-secondary" onclick="goStep(1,true)">← 戻る</button>
+    <button class="btn btn-primary" onclick="goStep(3,true)">家族構成を入力する →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- STEP 3: 家族構成 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" id="step-3">
+  <div class="step-header">
+    <div class="step-badge">STEP 3</div>
+    <div>
+      <div class="step-title">家族構成</div>
+      <div class="step-desc">生計維持者と扶養する子の情報を入力してください。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">生計維持者の人数</div>
+    <div class="toggle-row">
+      <button class="tog-btn sel" id="earner-2-btn" onclick="setEarnerCount(2,this)">2名（父・母 等）</button>
+      <button class="tog-btn" id="earner-1-btn" onclick="setEarnerCount(1,this)">1名（ひとり親 等）</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">扶養している子の人数</div>
+    <div class="fg">
+      <label>扶養する子の総数 <span class="hint">（奨学生本人を含む）</span></label>
+      <div class="input-wrap">
+        <input type="text" inputmode="numeric" class="num-input" id="num-children" value="1">
+        <span class="input-unit">人</span>
+      </div>
+      <div class="err-msg" id="err-num-children">1人以上の人数を入力してください</div>
+    </div>
+    <div id="tashi-box" class="info-box" style="margin-top:10px">
+      <strong>多子世帯：</strong>該当しません
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-secondary" onclick="goStep(2,true)">← 戻る</button>
+    <button class="btn btn-primary" onclick="goS3Next()">次へ：収入情報を入力 →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- STEP 4: 収入情報 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" id="step-4">
+  <div class="step-header">
+    <div class="step-badge">STEP 4</div>
+    <div>
+      <div class="step-title">収入情報（住民税）</div>
+      <div class="step-desc">市区町村の住民税通知書・課税証明書の値を入力してください。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">居住市区町村の種別</div>
+    <div class="toggle-row">
+      <button class="tog-btn sel" id="city-normal-btn" onclick="setCityType('normal',this)">通常の市区町村</button>
+      <button class="tog-btn" id="city-seirei-btn" onclick="setCityType('seirei',this)">政令指定都市</button>
+    </div>
+    <div class="info-box" style="margin-top:10px">
+      政令指定都市（<a href="https://www.soumu.go.jp/main_sosiki/jichi_gyousei/bunken/shitei_toshi-ichiran.html" target="_blank">一覧はこちら</a>）に住民税を納めている場合は「政令指定都市」を選択してください。
+    </div>
+  </div>
+
+  <div class="info-box" style="margin-bottom:14px">
+    <strong>入力する値：</strong>住民税の課税証明書（または住民税通知書）の<br>
+    ① 課税標準額（課税所得額）　② 市町村民税_調整控除額　③ 市町村民税_調整額（給付型のみ）
+  </div>
+
+  <!-- 生計維持者1 -->
+  <div class="card">
+    <div class="card-title">生計維持者の住民税情報</div>
+    <div class="earner-block">
+      <div class="earner-label">
+        <span class="earner-tag e1">生計維持者 1</span>（父・母 等）
+      </div>
+      <div class="form-grid-2">
+        <div class="fg full">
+          <label>① 課税標準額（課税所得額）</label>
+          <div class="input-wrap">
+            <input type="text" inputmode="numeric" class="num-input" id="e1-taxable" placeholder="例：576000">
+            <span class="input-unit">円</span>
+          </div>
+          <div class="err-msg" id="err-e1-taxable">課税標準額を入力してください</div>
+        </div>
+        <div class="fg">
+          <label>② 調整控除額</label>
+          <div class="input-wrap">
+            <input type="text" inputmode="numeric" class="num-input" id="e1-adjust-ctrl" placeholder="例：4500">
+            <span class="input-unit">円</span>
+          </div>
+          <div class="err-msg" id="err-e1-adjust-ctrl">調整控除額を入力してください</div>
+        </div>
+        <div class="fg" id="e1-adj3-wrap">
+          <label>③ 調整額 <span class="hint">（給付型のみ）</span></label>
+          <div class="input-wrap">
+            <input type="text" inputmode="numeric" class="num-input" id="e1-adjust" placeholder="例：0" value="0">
+            <span class="input-unit">円</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 生計維持者2 -->
+    <div id="earner2-block" class="earner-block">
+      <div class="earner-label">
+        <span class="earner-tag e2">生計維持者 2</span>（父・母 等）
+      </div>
+      <div class="fg" style="margin-bottom:10px">
+        <div class="chk-item" id="e2-nontax-item" onclick="toggleChk(this,'e2-nontax');syncE2()">
+          <input type="checkbox" id="e2-nontax" style="display:none">
+          <div class="chk-box"></div>
+          <div>
+            <div class="chk-text">住民税非課税（収入なし・パート等）</div>
+            <div class="chk-sub">住民税非課税の場合、支給算定基準額は 0円</div>
+          </div>
+        </div>
+      </div>
+      <div id="e2-inputs">
+        <div class="form-grid-2">
+          <div class="fg full">
+            <label>① 課税標準額</label>
+            <div class="input-wrap">
+              <input type="text" inputmode="numeric" class="num-input" id="e2-taxable" placeholder="例：0">
+              <span class="input-unit">円</span>
+            </div>
+            <div class="err-msg" id="err-e2-taxable">課税標準額を入力してください</div>
+          </div>
+          <div class="fg">
+            <label>② 調整控除額</label>
+            <div class="input-wrap">
+              <input type="text" inputmode="numeric" class="num-input" id="e2-adjust-ctrl" placeholder="例：0">
+              <span class="input-unit">円</span>
+            </div>
+            <div class="err-msg" id="err-e2-adjust-ctrl">調整控除額を入力してください</div>
+          </div>
+          <div class="fg" id="e2-adj3-wrap">
+            <label>③ 調整額 <span class="hint">（給付型のみ）</span></label>
+            <div class="input-wrap">
+              <input type="text" inputmode="numeric" class="num-input" id="e2-adjust" placeholder="例：0" value="0">
+              <span class="input-unit">円</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 学生本人（給付型のみ） -->
+    <div id="student-block">
+      <div class="earner-block" style="border-color:rgba(13,155,106,0.3)">
+        <div class="earner-label">
+          <span class="earner-tag" style="background:rgba(13,155,106,0.1);color:var(--kit-green)">学生本人</span>
+          <span style="color:var(--kit-green);font-size:11px">給付型判定に使用</span>
+        </div>
+        <div class="fg" style="margin-bottom:10px">
+          <div class="chk-item on" id="student-nontax-item" onclick="toggleChk(this,'student-nontax');syncStudent()">
+            <input type="checkbox" id="student-nontax" checked style="display:none">
+            <div class="chk-box">✓</div>
+            <div>
+              <div class="chk-text">住民税非課税（収入なし）</div>
+              <div class="chk-sub">アルバイト等の収入がある場合はチェックを外して入力してください</div>
+            </div>
+          </div>
+        </div>
+        <div id="student-inputs" style="display:none">
+          <div class="form-grid-2">
+            <div class="fg full">
+              <label>① 課税標準額</label>
+              <div class="input-wrap">
+                <input type="text" inputmode="numeric" class="num-input" id="s-taxable" placeholder="0">
+                <span class="input-unit">円</span>
+              </div>
+              <div class="err-msg" id="err-s-taxable">課税標準額を入力してください（収入がない場合は上のチェックを入れてください）</div>
+            </div>
+            <div class="fg">
+              <label>② 調整控除額</label>
+              <div class="input-wrap">
+                <input type="text" inputmode="numeric" class="num-input" id="s-adjust-ctrl" placeholder="0">
+                <span class="input-unit">円</span>
+              </div>
+              <div class="err-msg" id="err-s-adjust-ctrl">調整控除額を入力してください</div>
+            </div>
+            <div class="fg">
+              <label>③ 調整額</label>
+              <div class="input-wrap">
+                <input type="text" inputmode="numeric" class="num-input" id="s-adjust" placeholder="0">
+                <span class="input-unit">円</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-secondary" onclick="goStep(3,true)">← 戻る</button>
+    <button class="btn btn-primary" onclick="goS4Next()">次へ：資産・控除 →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- STEP 5: 資産・控除 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" id="step-5">
+  <div class="step-header">
+    <div class="step-badge">STEP 5</div>
+    <div>
+      <div class="step-title">資産情報・各種控除</div>
+      <div class="step-desc">世帯の資産状況と各種控除を確認します。</div>
+    </div>
+  </div>
+
+  <div class="card" id="asset-card">
+    <div class="card-title">世帯の資産区分</div>
+    <p style="font-size:12px;color:var(--text-2);margin-bottom:14px">
+      資産（現金・預貯金・有価証券・投資信託・満期保険金 等）の合計額を選択してください。
+    </p>
+    <div class="info-box" style="margin-bottom:14px">
+      <strong>資産基準のルール：</strong><br>
+      ・<strong>多子世帯以外</strong>：5,000万円未満のみ給付型奨学金・授業料等減免の対象<br>
+      ・<strong>多子世帯（3人以上）</strong>：5,000万円未満→給付＋減免、5,000万〜3億円未満→授業料等減免のみ、3億円以上→対象外
+    </div>
+    <div class="r-cards" id="asset-radio">
+      <div class="r-card sel" id="asset-under5000" onclick="selectAsset('under5000',this)">
+        <div class="r-dot"></div>
+        <div>
+          <div class="r-card-text">5,000万円未満</div>
+          <div class="r-card-sub">給付型奨学金・授業料等減免の判定対象</div>
+        </div>
+      </div>
+      <div class="r-card" id="asset-5000to3oku" onclick="selectAsset('5000to3oku',this)">
+        <div class="r-dot"></div>
+        <div>
+          <div class="r-card-text">5,000万円以上 ～ 3億円未満</div>
+          <div class="r-card-sub">多子世帯のみ授業料等減免の判定対象</div>
+        </div>
+      </div>
+      <div class="r-card" id="asset-over3oku" onclick="selectAsset('over3oku',this)">
+        <div class="r-dot"></div>
+        <div>
+          <div class="r-card-text">3億円以上</div>
+          <div class="r-card-sub">修学支援新制度の対象外となります</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 貸与型コントロール（both選択時のみ） -->
+  <div class="card" id="taiyo-control-card">
+    <div class="card-title">貸与型奨学金の控除設定</div>
+    <div class="fg" style="margin-bottom:14px">
+      <label>採用方式</label>
+      <select id="adoption-type">
+        <option value="yoyaku" selected>予約採用</option>
+        <option value="zaigaku">在学採用</option>
+      </select>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="chk-item disabled" id="sp-check2">
+        <div class="chk-box"></div>
+        <div>
+          <div class="chk-text">ひとり親控除 <span class="auto-badge">自動</span></div>
+          <div class="chk-sub" id="sp-sub2">－0円（生計維持者1名のとき適用）</div>
+        </div>
+      </div>
+      <div class="chk-item disabled" id="mc-check2">
+        <div class="chk-box"></div>
+        <div>
+          <div class="chk-text">多子控除 <span class="auto-badge">自動</span></div>
+          <div class="chk-sub" id="mc-sub2">－0円（扶養する子が3人以上で適用）</div>
+        </div>
+      </div>
+      <div class="chk-item disabled" id="paway-check" onclick="togglePrivateAway(this)">
+        <div class="chk-box"></div>
+        <div>
+          <div class="chk-text">私立自宅外控除</div>
+          <div class="chk-sub" id="paway-sub">－22,000円（在学採用のみ選択可）</div>
+        </div>
+      </div>
+    </div>
+    <div class="info-box" style="margin-top:12px">
+      <strong>ひとり親控除・多子控除</strong>は家族構成から自動反映されます。
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-secondary" onclick="goStep(4,true)">← 戻る</button>
+    <button class="btn btn-primary" onclick="goStep(6,true)">次へ：通学・特例情報 →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- STEP 6: 通学区分・特例 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" id="step-6">
+  <div class="step-header">
+    <div class="step-badge">STEP 6</div>
+    <div>
+      <div class="step-title">通学形態・特例区分</div>
+      <div class="step-desc">通学形態と生活保護等の特例情報を入力してください。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">通学形態</div>
+    <div class="toggle-row">
+      <button class="tog-btn sel" id="commute-jitaku-btn" onclick="setCommute('jitaku',this)">自宅通学</button>
+      <button class="tog-btn" id="commute-jitakugai-btn" onclick="setCommute('jitakugai',this)">自宅外通学（一人暮らし 等）</button>
+    </div>
+    <div class="info-box" style="margin-top:10px">
+      自宅外通学の場合、<strong>給付型奨学金の月額が増額</strong>されます。授業料等減免の額は変わりません。
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">生活保護・特例区分</div>
+    <div class="toggle-row">
+      <button class="tog-btn sel" id="special-no-btn" onclick="setSpecial('no',this)">該当なし</button>
+      <button class="tog-btn" id="special-yes-btn" onclick="setSpecial('yes',this)">生活保護世帯同居 / 児童養護施設等</button>
+    </div>
+    <div class="info-box warn" style="margin-top:10px">
+      生活保護（扶助の種類を問いません）を受けている生計維持者と同居している場合、または社会的養護を必要とする人（児童養護施設等から通学する方）は、給付型奨学金の<strong>対象者向けの増額（カッコ内金額）</strong>が適用されます。
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-secondary" onclick="goStep(5,true)">← 戻る</button>
+    <button class="btn btn-primary" onclick="goStep(7,true)">次へ：表示設定 →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- STEP 7: 表示設定 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" id="step-7">
+  <div class="step-header">
+    <div class="step-badge">STEP 7</div>
+    <div>
+      <div class="step-title">結果の表示設定</div>
+      <div class="step-desc">試算結果に含める支援内容を選んでください。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">結果に表示する支援内容</div>
+    <div class="pattern-grid" id="disp-pattern-grid">
+      <div class="pat-card" id="dp-reduction" onclick="selectDispPattern('reduction')">
+        <div class="pat-icon">📋</div>
+        <div class="pat-name">授業料減免のみ</div>
+        <div class="pat-desc">国の支援制度による授業料・入学金の減免のみを表示</div>
+        <div class="pat-badge blue">減免のみ</div>
+      </div>
+      <div class="pat-card" id="dp-full" onclick="selectDispPattern('full')">
+        <div class="pat-icon">🎓</div>
+        <div class="pat-name">減免＋給付奨学金</div>
+        <div class="pat-desc">授業料等減免に加え、給付型奨学金の年間受取額も含めて表示</div>
+        <div class="pat-badge green">合わせて確認</div>
+      </div>
+    </div>
+    <div class="info-box" style="margin-top:14px">
+      結果画面では<strong>左右に「支援なし」「支援あり」</strong>を並べて表示します。上の設定で、右側の「支援あり」欄に含める制度を選んでください。
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-secondary" onclick="goStep(6,true)">← 戻る</button>
+    <button class="btn btn-primary" id="btn-s7-next" onclick="goS7Next()" disabled style="opacity:0.4;cursor:not-allowed">試算結果を見る →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- STEP 8: 試算結果 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" id="step-8">
+  <div class="step-header">
+    <div class="step-badge">STEP 8</div>
+    <div>
+      <div class="step-title">KG 進学費用シミュレーション 結果</div>
+      <div class="step-desc">支援あり・なしを左右で比較できます。</div>
+    </div>
+  </div>
+
+  <div id="result-root"></div>
+
+  <div style="margin-top:20px;display:flex;flex-direction:column;gap:8px">
+    <button class="btn-ghost" onclick="goStep(7,true)">← 表示設定を変更する</button>
+    <button class="btn-ghost" onclick="goStep(1,true)">← 最初から再試算する</button>
+  </div>
+</div>
+
+</main>
+
+<!-- ═══════════════ SCRIPT ═══════════════ -->
+<script>
+'use strict';
+
+// ─── STATE ───
+const ST = {
+  faculty: null,          // 'info-design' etc
+  dispPattern: null,      // 'reduction' | 'full'
+  earnerCount: 2,
+  cityType: 'normal',     // 'normal' | 'seirei'
+  assetLevel: 'under5000',
+  commute: 'jitaku',      // 'jitaku' | 'jitakugai'
+  specialSupport: 'no',   // 'no' | 'yes'
+  adoptionType: 'yoyaku'
+};
+
+// ─── KG DATA (2026年度入学生・公式学費ページより) ───
+// 各フィールド:
+//   admissionFee : 入学金
+//   tuitionY1    : 1年次授業料（減免対象）
+//   tuitionY234  : 2〜4年次授業料（減免対象）
+//   expY1        : 1年次実験実習費
+//   expY234      : 2〜4年次実験実習費
+//   facilityY1   : 1年次教育充実費
+//   facilityY234 : 2〜4年次教育充実費
+//   stem         : 理系学部フラグ（第Ⅳ区分授業料等減免対象）
+//
+// ▼ 年次合計（入学金除く） = tuition + exp + facility
+// 文系6学部: Y1=955,000 / Y234=1,155,000
+// 文学部(心理): Y1=1,136,000 / Y234=1,365,000
+// 人間福祉: Y1=1,171,000 / Y234=1,371,000
+// 教育: Y1=1,268,000 / Y234=1,468,000
+// 国際: Y1=1,263,000 / Y234=1,463,000
+// 総政(一般): Y1=1,296,000 / Y234=1,496,000
+// 総政(メディア情報): Y1=1,296,000 / Y234=1,521,000
+// 理系(数理): Y1=1,511,000 / Y234=1,711,000 ← 実験費が少ない
+// 理系(他):  Y1=1,551,000 / Y234=1,751,000
+const KIT_TUITION = {
+  // 文系6学部（神・文(文化歴史・文学言語)・社会・法・経済・商）
+  groupA: {
+    label: '神学部 / 文学部(文化歴史・文学言語) / 社会学部 / 法学部 / 経済学部 / 商学部',
+    admissionFee: 200000,
+    tuitionY1: 773000, tuitionY234: 943000,
+    expY1: 0, expY234: 0,
+    facilityY1: 182000, facilityY234: 212000,
+    stem: false
+  },
+  // 文学部（総合心理科学科）
+  groupB: {
+    label: '文学部（総合心理科学科）',
+    admissionFee: 200000,
+    tuitionY1: 904000, tuitionY234: 1070000,
+    expY1: 23000, expY234: 52000,
+    facilityY1: 209000, facilityY234: 243000,
+    stem: false
+  },
+  // 人間福祉学部
+  groupB2: {
+    label: '人間福祉学部',
+    admissionFee: 200000,
+    tuitionY1: 943000, tuitionY234: 1107000,
+    expY1: 10000, expY234: 10000,
+    facilityY1: 218000, facilityY234: 254000,
+    stem: false
+  },
+  // 教育学部
+  groupB3: {
+    label: '教育学部',
+    admissionFee: 200000,
+    tuitionY1: 1028000, tuitionY234: 1188000,
+    expY1: 5000, expY234: 5000,
+    facilityY1: 235000, facilityY234: 275000,
+    stem: false
+  },
+  // 国際学部
+  groupB4: {
+    label: '国際学部',
+    admissionFee: 200000,
+    tuitionY1: 1028000, tuitionY234: 1188000,
+    expY1: 0, expY234: 0,
+    facilityY1: 235000, facilityY234: 275000,
+    stem: false
+  },
+  // 総合政策学部（総合政策・国際政策・都市政策学科）
+  groupB5: {
+    label: '総合政策学部（総合政策・国際政策・都市政策学科）',
+    admissionFee: 200000,
+    tuitionY1: 1031000, tuitionY234: 1191000,
+    expY1: 30000, expY234: 30000,
+    facilityY1: 235000, facilityY234: 275000,
+    stem: false
+  },
+  // 総合政策学部（メディア情報学科）— 2〜4年次実験費のみ異なる
+  groupB5m: {
+    label: '総合政策学部（メディア情報学科）',
+    admissionFee: 200000,
+    tuitionY1: 1031000, tuitionY234: 1191000,
+    expY1: 30000, expY234: 55000,
+    facilityY1: 235000, facilityY234: 275000,
+    stem: false
+  },
+  // 理学部（数理科学科）— 実験費が他理系より少ない
+  groupC1: {
+    label: '理学部（数理科学科）',
+    admissionFee: 200000,
+    tuitionY1: 1162000, tuitionY234: 1318000,
+    expY1: 59000, expY234: 59000,
+    facilityY1: 266000, facilityY234: 310000,
+    stem: true
+  },
+  // 理系（理学部(物理・化学)・工学部・生命環境学部・建築学部）
+  groupC: {
+    label: '理学部（物理・宇宙・化学）/ 工学部 / 生命環境学部 / 建築学部',
+    admissionFee: 200000,
+    tuitionY1: 1162000, tuitionY234: 1318000,
+    expY1: 99000, expY234: 99000,
+    facilityY1: 266000, facilityY234: 310000,
+    stem: true
+  }
+};
+const KIT_FAC_MAP = {
+  'theology':    { group: 'groupA',  label: '神学部', sub: '神学科' },
+  'lit':         { group: 'groupA',  label: '文学部（文化歴史・文学言語学科）', sub: '文化歴史学科 / 文学言語学科' },
+  'soc':         { group: 'groupA',  label: '社会学部', sub: '社会学科' },
+  'law':         { group: 'groupA',  label: '法学部', sub: '法律学科 / 政治学科' },
+  'econ':        { group: 'groupA',  label: '経済学部', sub: '経済学科' },
+  'com':         { group: 'groupA',  label: '商学部', sub: '商学科' },
+  'psych':       { group: 'groupB',  label: '文学部（総合心理科学科）', sub: '総合心理科学科' },
+  'welfare':     { group: 'groupB2', label: '人間福祉学部', sub: '社会福祉・社会起業・人間科学 各学科' },
+  'edu':         { group: 'groupB3', label: '教育学部', sub: '教育学科' },
+  'intl':        { group: 'groupB4', label: '国際学部', sub: '国際学科' },
+  'policy':      { group: 'groupB5', label: '総合政策学部（総合政策・国際政策・都市政策学科）', sub: '総合政策学科 / 国際政策学科 / 都市政策学科' },
+  'policy-med':  { group: 'groupB5m',label: '総合政策学部（メディア情報学科）', sub: 'メディア情報学科' },
+  'sci-math':    { group: 'groupC1', label: '理学部（数理科学科）', sub: '数理科学科' },
+  'sci-phys':    { group: 'groupC',  label: '理学部（物理・宇宙・化学）', sub: '物理・宇宙学科 / 化学科' },
+  'eng':         { group: 'groupC',  label: '工学部', sub: '機械・電気電子応用・情報工学 等' },
+  'life':        { group: 'groupC',  label: '生命環境学部', sub: '生命医科学・環境応用化学 等' },
+  'arch':        { group: 'groupC',  label: '建築学部', sub: '建築学科' }
+};
+
+// 年次合計を計算するヘルパー
+function getYearFee(t, yr) {
+  if (yr === 1) return t.tuitionY1 + t.expY1 + t.facilityY1;
+  return t.tuitionY234 + t.expY234 + t.facilityY234;
+}
+function get4yTotal(t) {
+  return t.admissionFee + getYearFee(t,1) + getYearFee(t,2)*3;
+}
+
+const CONFIG = {
+  kyufu: { I: 100, II: 25600, III: 51300, IV: 154500 },
+  taiyo: [
+    { name: '第一種・第二種 併用', threshold: 164600 },
+    { name: '第一種（無利子）',    threshold: 189400 },
+    { name: '第二種（有利子）',    threshold: 381500 }
+  ]
+};
+
+// ─── HELPERS ───
+function byId(id) { return document.getElementById(id); }
+function fmt(n) { return (n / 10000).toFixed(1) + '万円'; }
+function fmtI(n) { return Math.round(n / 10000).toLocaleString() + '万円'; }
+function fmtM(n) { return n.toLocaleString() + '円/月'; }
+function floor100(n) { return Math.floor(n / 100) * 100; }
+function getNum(id, fb = 0) {
+  const el = byId(id); if (!el) return fb;
+  const v = parseFloat(normalNum(el.value));
+  return isNaN(v) ? fb : v;
+}
+function normalNum(s) {
+  return String(s || '').replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
+    .replace(/[，,\s]/g, '').trim();
+}
+function isNum(s) { return /^\d+(\.\d+)?$/.test(s); }
+
+// ─── TOAST ───
+let toastTimer;
+function toast(msg) {
+  const el = byId('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+// ─── PROGRESS TABS ───
+let currentStep = 1;
+function updateTabs(n) {
+  for (let i = 1; i <= 8; i++) {
+    const t = byId('tab-' + i);
+    if (!t) continue;
+    t.classList.remove('active', 'done');
+    if (i === n) t.classList.add('active');
+    else if (i < n) t.classList.add('done');
+  }
+}
+
+function goStep(n, allowFwd = false) {
+  const target = Math.min(8, Math.max(1, n));
+  if (!allowFwd && target > currentStep) {
+    toast('⚠ 画面下のボタンで次へ進んでください');
+    return;
+  }
+  document.querySelectorAll('.section').forEach((s, i) => s.classList.toggle('active', i + 1 === target));
+  currentStep = target;
+  updateTabs(target);
+  if (target === 2) buildTuitionInfo();
+  if (target === 5) { syncTaiyoCard(); syncDeductions(); }
+  if (target === 8) calcResult();
+  try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(e) { window.scrollTo(0,0); }
+}
+
+// ─── STEP 1: Faculty ───
+function selectFac(key) {
+  ST.faculty = key;
+  document.querySelectorAll('.fac-card').forEach(c => c.classList.remove('sel-a', 'sel-b'));
+  const info = KIT_FAC_MAP[key];
+  if (info) {
+    const el = byId('fc-' + key);
+    if (el) el.classList.add(info.stem ? 'sel-b' : 'sel-a');
+  }
+  const errEl = byId('err-fac');
+  if (errEl) errEl.style.display = 'none';
+}
+function goS1Next() {
+  if (!ST.faculty) {
+    const errEl = byId('err-fac');
+    if (errEl) errEl.style.display = 'block';
+    toast('⚠ 学部・学科を選択してください');
+    return;
+  }
+  goStep(2, true);
+}
+
+// ─── STEP 2: Tuition display ───
+function buildTuitionInfo() {
+  const fac = ST.faculty;
+  const info = KIT_FAC_MAP[fac];
+  const t = KIT_TUITION[info.group];
+  const admission = t.admissionFee;
+  const feeY1   = getYearFee(t, 1);
+  const feeY234 = getYearFee(t, 2);
+  const total4  = get4yTotal(t);
+  const hasExp  = t.expY1 > 0 || t.expY234 > 0;
+
+  const block = byId('tuition-info-block');
+  block.innerHTML = `
+    <div class="tuition-display">
+      <div class="td-fac-name">${info.label}</div>
+      <div class="td-fee-grid">
+        <div class="td-fee-item">
+          <div class="td-fee-label">入学金（初年度のみ）</div>
+          <div class="td-fee-val">${(admission/10000).toFixed(0)}<small>万円</small></div>
+        </div>
+        <div class="td-fee-item">
+          <div class="td-fee-label">授業料（2〜4年次）</div>
+          <div class="td-fee-val">${(t.tuitionY234/10000).toFixed(1)}<small>万円</small></div>
+        </div>
+        <div class="td-fee-item">
+          <div class="td-fee-label">4年間合計</div>
+          <div class="td-fee-val">${Math.round(total4/10000)}<small>万円</small></div>
+        </div>
+      </div>
+      <div class="td-note">※ 2026年度入学生（4年間一括明示方式）/ 入学金・実験実習費・教育充実費含む / その他諸費除く</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">年次別 内訳早見表（支援なし・その他諸費除く）</div>
+      <div class="info-box" style="margin-bottom:12px;font-size:12px">
+        💡 <strong>授業料等減免の対象は「授業料」のみです。</strong>実験実習費・教育充実費は減免されません。
+      </div>
+      <div class="fee-table-wrap">
+        <table class="fee-table">
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>1年次</th>
+              <th>2〜4年次</th>
+              <th>備考</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>入学金</td>
+              <td>${(admission/10000).toFixed(0)}万円</td>
+              <td class="no-support-col">—</td>
+              <td style="font-size:11px;color:var(--text-3)">入学時のみ</td>
+            </tr>
+            <tr style="background:rgba(0,48,135,0.04)">
+              <td><strong>授業料</strong> <span style="font-size:10px;padding:1px 6px;border-radius:4px;background:rgba(0,48,135,0.1);color:var(--kit-blue);font-weight:700">減免対象</span></td>
+              <td><strong>${t.tuitionY1.toLocaleString()}円</strong></td>
+              <td><strong>${t.tuitionY234.toLocaleString()}円</strong></td>
+              <td style="font-size:11px;color:var(--kit-blue)">授業料等減免の対象</td>
+            </tr>
+            ${hasExp ? `<tr>
+              <td>実験実習費</td>
+              <td>${t.expY1 > 0 ? t.expY1.toLocaleString()+'円' : '—'}</td>
+              <td>${t.expY234 > 0 ? t.expY234.toLocaleString()+'円' : '—'}</td>
+              <td style="font-size:11px;color:var(--text-3)">減免対象外</td>
+            </tr>` : ''}
+            <tr>
+              <td>教育充実費</td>
+              <td>${t.facilityY1.toLocaleString()}円</td>
+              <td>${t.facilityY234.toLocaleString()}円</td>
+              <td style="font-size:11px;color:var(--text-3)">減免対象外</td>
+            </tr>
+            <tr style="background:rgba(0,48,135,0.04)">
+              <td><strong>年次合計</strong></td>
+              <td><strong>${feeY1.toLocaleString()}円</strong></td>
+              <td><strong>${feeY234.toLocaleString()}円</strong></td>
+              <td style="font-size:11px;color:var(--text-3)">入学金除く</td>
+            </tr>
+            <tr>
+              <td><strong>初年度合計</strong></td>
+              <td colspan="2" style="font-weight:800;color:var(--kit-navy);font-size:15px">${(admission+feeY1).toLocaleString()}円</td>
+              <td style="font-size:11px;color:var(--text-3)">入学金含む</td>
+            </tr>
+            <tr>
+              <td><strong>4年間合計</strong></td>
+              <td colspan="2" class="amt-strong" style="color:var(--kit-navy)">${total4.toLocaleString()}円</td>
+              <td style="font-size:11px;color:var(--text-3)">入学金含む</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+// ─── STEP 3: Family ───
+function setEarnerCount(n, btn) {
+  ST.earnerCount = n;
+  document.querySelectorAll('#step-3 .tog-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  const e2 = byId('earner2-block');
+  if (e2) e2.style.display = n === 2 ? 'block' : 'none';
+  syncDeductions();
+  updateTashiBox();
+}
+function goS3Next() {
+  const nc = byId('num-children');
+  const v = parseInt(normalNum(nc.value));
+  if (!v || v < 1 || isNaN(v)) {
+    byId('err-num-children').style.display = 'block';
+    nc.closest('.fg').classList.add('field-error');
+    toast('⚠ 扶養している子の人数を入力してください');
+    return;
+  }
+  byId('err-num-children').style.display = 'none';
+  nc.closest('.fg').classList.remove('field-error');
+  goStep(4, true);
+}
+function updateTashiBox() {
+  const nc = Math.floor(getNum('num-children', 1));
+  const box = byId('tashi-box');
+  if (nc >= 3) {
+    box.className = 'info-box green';
+    box.innerHTML = '<strong>多子世帯：</strong>該当します（3人以上）— 多子控除・特別な資産基準が適用されます';
+  } else {
+    box.className = 'info-box';
+    box.innerHTML = '<strong>多子世帯：</strong>該当しません';
+  }
+}
+
+// ─── STEP 4: Income ───
+function setCityType(val, btn) {
+  ST.cityType = val;
+  document.querySelectorAll('#city-normal-btn, #city-seirei-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+function syncAdjust3Visibility() {
+  // 常に給付型も計算するので③調整額は常に表示
+  ['e1-adj3-wrap','e2-adj3-wrap'].forEach(id => {
+    const el = byId(id);
+    if (el) el.style.display = 'block';
+  });
+}
+function syncStudentBlock() {
+  // 常に給付型も計算するので学生本人欄は常に表示
+  const el = byId('student-block');
+  if (el) el.style.display = 'block';
+}
+function syncE2() {
+  const checked = byId('e2-nontax').checked;
+  byId('e2-inputs').style.display = checked ? 'none' : 'block';
+}
+function syncStudent() {
+  const checked = byId('student-nontax').checked;
+  byId('student-inputs').style.display = checked ? 'none' : 'block';
+  // チェックON時はエラーをリセット
+  if (checked) {
+    ['s-taxable','s-adjust-ctrl'].forEach(id => {
+      const el = byId(id);
+      const fg = el?.closest('.fg');
+      const err = byId('err-' + id);
+      if (fg) fg.classList.remove('field-error');
+      if (err) err.style.display = 'none';
+    });
+  }
+}
+function toggleChk(el, key) {
+  if (el.classList.contains('disabled')) return;
+  el.classList.toggle('on');
+  const cb = byId(key);
+  if (cb) { cb.checked = el.classList.contains('on'); }
+  const box = el.querySelector('.chk-box');
+  if (box) box.textContent = el.classList.contains('on') ? '✓' : '';
+}
+
+function validateS4() {
+  let ok = true;
+  const need2 = ST.earnerCount === 2 && !byId('e2-nontax').checked;
+  const isStudentNonTax = byId('student-nontax').checked;
+
+  const pairs = [
+    ['e1-taxable',    true],
+    ['e1-adjust-ctrl',true],
+    ['e2-taxable',    need2],
+    ['e2-adjust-ctrl',need2],
+    ['s-taxable',     !isStudentNonTax],
+    ['s-adjust-ctrl', !isStudentNonTax]
+  ];
+  pairs.forEach(([id, required]) => {
+    const el = byId(id);
+    if (!el) return;
+    const v = normalNum(el.value);
+    const fg = el.closest('.fg');
+    const err = byId('err-' + id);
+    if (required && v === '') {
+      if (fg) fg.classList.add('field-error');
+      if (err) err.style.display = 'block';
+      ok = false;
+    } else if (v !== '' && !isNum(v)) {
+      if (fg) fg.classList.add('field-error');
+      if (err) err.style.display = 'block';
+      ok = false;
+    } else {
+      if (fg) fg.classList.remove('field-error');
+      if (err) err.style.display = 'none';
+    }
+  });
+  return ok;
+}
+function goS4Next() {
+  if (!validateS4()) { toast('⚠ 未入力または入力エラーがあります'); return; }
+  goStep(5, true);
+}
+
+// ─── STEP 5: Asset / deductions ───
+function selectAsset(val, el) {
+  ST.assetLevel = val;
+  document.querySelectorAll('.r-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function syncTaiyoCard() {
+  // 常に貸与型も計算するので控除カードは常に表示
+  const card = byId('taiyo-control-card');
+  if (card) card.style.display = 'block';
+}
+function syncDeductions() {
+  const single = ST.earnerCount === 1;
+  const nc = Math.max(0, Math.floor(getNum('num-children', 1)));
+  const multi = Math.max(0, nc - 2);
+
+  // single parent
+  const spEl = byId('sp-check2');
+  const spSub = byId('sp-sub2');
+  if (spEl) {
+    spEl.classList.toggle('on', single);
+    const box = spEl.querySelector('.chk-box');
+    if (box) box.textContent = single ? '✓' : '';
+    if (spSub) spSub.textContent = single ? '－40,000円（ひとり親控除）' : '－0円（生計維持者1名のとき適用）';
+  }
+
+  // multi child
+  const mcEl = byId('mc-check2');
+  const mcSub = byId('mc-sub2');
+  if (mcEl) {
+    mcEl.classList.toggle('on', multi > 0);
+    const box = mcEl.querySelector('.chk-box');
+    if (box) box.textContent = multi > 0 ? '✓' : '';
+    if (mcSub) {
+      mcSub.textContent = multi > 0
+        ? `－${(multi * 40000).toLocaleString()}円（${nc}人 → 3人目以降 ${multi}人分）`
+        : '－0円（扶養する子が3人以上で適用）';
+    }
+  }
+
+  // private away
+  const paEl = byId('paway-check');
+  const paSub = byId('paway-sub');
+  const isZaigaku = (byId('adoption-type') || {}).value === 'zaigaku';
+  if (paEl) {
+    paEl.classList.toggle('disabled', !isZaigaku);
+    if (!isZaigaku) {
+      paEl.classList.remove('on');
+      const box = paEl.querySelector('.chk-box');
+      if (box) box.textContent = '';
+    }
+    if (paSub) paSub.textContent = isZaigaku ? '－22,000円（在学採用のとき選択可）' : '－22,000円（予約採用では選択不可）';
+  }
+}
+function togglePrivateAway(el) {
+  if (el.classList.contains('disabled')) return;
+  toggleChk(el, null);
+}
+
+// ─── STEP 6: commute / special ───
+function setCommute(val, btn) {
+  ST.commute = val;
+  document.querySelectorAll('#commute-jitaku-btn, #commute-jitakugai-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+function setSpecial(val, btn) {
+  ST.specialSupport = val;
+  document.querySelectorAll('#special-no-btn, #special-yes-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+// ─── STEP 7: display pattern ───
+function selectDispPattern(pat) {
+  ST.dispPattern = pat;
+  byId('dp-reduction').classList.remove('sel-blue','sel-green');
+  byId('dp-full').classList.remove('sel-blue','sel-green');
+  if (pat === 'reduction') byId('dp-reduction').classList.add('sel-blue');
+  if (pat === 'full') byId('dp-full').classList.add('sel-green');
+  const btn = byId('btn-s7-next');
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  btn.style.cursor = 'pointer';
+}
+function goS7Next() {
+  if (!ST.dispPattern) { toast('⚠ 表示パターンを選択してください'); return; }
+  goStep(8, true);
+}
+
+// ─── CALCULATION ENGINE ───
+function calcKyufuBase(taxable, ctrl, adj, isSeirei) {
+  const base = taxable * 0.06;
+  const ded = isSeirei ? (ctrl + adj) * 0.75 : (ctrl + adj);
+  return floor100(base - ded);
+}
+function calcTaiyoBase(taxable, ctrl, isSeirei) {
+  const base = taxable * 0.06;
+  const ded = isSeirei ? ctrl * 0.75 : ctrl;
+  return floor100(base - ded);
+}
+
+function getKyufuMonthly(zone, commute) {
+  // KG = 私立大学（令和7年度以降）
+  const table = {
+    I:   { jitaku: { main: 38300, sub: 42500 }, jitakugai: { main: 75800, sub: 80000 } },
+    II:  { jitaku: { main: 25600, sub: 28400 }, jitakugai: { main: 50600, sub: 53400 } },
+    III: { jitaku: { main: 12800, sub: 14200 }, jitakugai: { main: 25300, sub: 26700 } },
+    IV:  { jitaku: { main: 9600,  sub: 10700 }, jitakugai: { main: 19000, sub: 20100 } }
+  };
+  if (!zone) return null;
+  return table[zone]?.[commute === 'jitakugai' ? 'jitakugai' : 'jitaku'] || null;
+}
+
+function getReductionRow(zone, isStem) {
+  // KG = 私立大学、授業料等減免（JASSO基準）
+  // 入学金減免：JASSOの上限（26万円）と学校の入学金（KG:20万円）の低い方
+  //   第Ⅰ区分：min(26万,20万)=20万円
+  //   第Ⅱ区分：20万円×2/3=133,400円 → 13.34万円
+  //   第Ⅲ・Ⅳ区分：20万円×1/3=66,700円 → 6.67万円
+  // 授業料等減免：
+  //   私立大学：第Ⅰ区分=70万円、第Ⅱ区分=46.7万円、第Ⅲ区分=23.3万円、第Ⅳ区分=23.3万円(理系のみ)
+  const table = {
+    I:    { ny: 20.0,  jy: 70.0 },
+    II:   { ny: 13.34, jy: 46.7 },
+    III:  { ny:  6.67, jy: 23.3 },
+    IV:   { ny:  6.67, jy: 23.3 }, // 私立理工農系のみ
+    many: { ny: 20.0,  jy: 70.0 }
+  };
+  if (!zone) return null;
+  if (zone === 'IV' && !isStem) return null;
+  return table[zone] || null;
+}
+
+function computeAll() {
+  const isSeirei = ST.cityType === 'seirei';
+  const earnerCount = ST.earnerCount;
+  const isE2NonTax = byId('e2-nontax')?.checked;
+  const isStudentNonTax = byId('student-nontax')?.checked;
+
+  // ── Give type bases
+  const e1T = getNum('e1-taxable');
+  const e1C = getNum('e1-adjust-ctrl');
+  const e1A = getNum('e1-adjust');
+  const e1KBase = calcKyufuBase(e1T, e1C, e1A, isSeirei);
+
+  let e2KBase = 0, e2TBase = 0;
+  if (earnerCount === 2 && !isE2NonTax) {
+    const e2T = getNum('e2-taxable');
+    const e2C = getNum('e2-adjust-ctrl');
+    const e2A = getNum('e2-adjust');
+    e2KBase = calcKyufuBase(e2T, e2C, e2A, isSeirei);
+    e2TBase = calcTaiyoBase(e2T, e2C, isSeirei);
+  }
+
+  let sKBase = 0;
+  if (!isStudentNonTax) {
+    const sT = getNum('s-taxable');
+    const sC = getNum('s-adjust-ctrl');
+    const sA = getNum('s-adjust');
+    sKBase = calcKyufuBase(sT, sC, sA, isSeirei);
+  }
+
+  const e1TBase = calcTaiyoBase(e1T, e1C, isSeirei);
+  const nc = Math.max(1, Math.floor(getNum('num-children', 1)));
+  const single = earnerCount === 1;
+  const multi = Math.max(0, nc - 2);
+  const paEl = byId('paway-check');
+  const privateAway = paEl && paEl.classList.contains('on');
+
+  // 貸与型のみ：ひとり親・多子・私立自宅外控除を適用
+  let ded = 0;
+  if (single) ded += 40000;
+  if (multi > 0) ded += multi * 40000;
+  if (privateAway) ded += 22000;
+
+  // 給付型：控除なし（課税標準×6%−調整控除額−調整額のみ）
+  // JASSO公式：第Ⅰ区分100円未満、第Ⅱ区分100〜25,599円、第Ⅲ区分25,600〜51,299円、第Ⅳ区分51,300〜154,499円
+  const kyufuSantei = Math.max(0, e1KBase + e2KBase + sKBase);
+  let kyufuZone = null;
+  if      (kyufuSantei <   100) kyufuZone = 'I';
+  else if (kyufuSantei < 25600) kyufuZone = 'II';
+  else if (kyufuSantei < 51300) kyufuZone = 'III';
+  else if (kyufuSantei < 154500) kyufuZone = 'IV';
+
+  // ── 資産要件の判定 ──
+  // 非多子：5,000万円未満のみ給付・減免ともに対象
+  // 多子  ：5,000万円未満→給付＋減免、5,000万〜3億円未満→減免のみ、3億円以上→両方対象外
+  const hasManyChildren = nc >= 3;
+
+  // 給付型OK：5,000万円未満のみ（多子・非多子共通）
+  // ただし第Ⅳ区分は多子世帯のみ給付型利用可（1子・2子は授業料等減免のみ）
+  const kyufuOK = !!kyufuZone && ST.assetLevel === 'under5000'
+    && !(kyufuZone === 'IV' && !hasManyChildren);
+
+  const effZone = hasManyChildren ? 'many' : kyufuZone;
+  const isStem = KIT_TUITION[KIT_FAC_MAP[ST.faculty]?.group]?.stem ?? false;
+
+  // 授業料等減免OK：
+  //   非多子 → 5,000万円未満のみ
+  //             ただし第Ⅳ区分・理工農系は5,000万〜3億円でも減免利用可
+  //   多子   → 5,000万円未満 または 5,000万〜3億円未満（3億円以上はNG）
+  const isIV1or2stemAsset5k = kyufuZone === 'IV' && !hasManyChildren && isStem && ST.assetLevel === '5000to3oku';
+  const assetReductionOK = hasManyChildren
+    ? ST.assetLevel !== 'over3oku'
+    : (ST.assetLevel === 'under5000' || isIV1or2stemAsset5k);
+
+  // Reduction row
+  let reductionZone = effZone;
+  if (reductionZone === 'IV' && !hasManyChildren && !isStem) reductionZone = null;
+  const reductionRow = assetReductionOK ? getReductionRow(reductionZone, isStem) : null;
+
+  // Kyufu monthly
+  const commute = ST.commute;
+  let kyufuMonthly = 0;
+  if (kyufuOK && kyufuZone) {
+    const row = getKyufuMonthly(kyufuZone, commute);
+    if (row) {
+      kyufuMonthly = ST.specialSupport === 'yes'
+        ? (row.sub || row.main)
+        : row.main;
+    }
+  }
+
+  // Tuition (KG: 内訳ベースで正確に計算)
+  const facInfo = KIT_FAC_MAP[ST.faculty];
+  const tuition = KIT_TUITION[facInfo.group];
+  const admission = tuition.admissionFee;
+  const feeY1   = getYearFee(tuition, 1);  // 1年次合計（授業料+実験+教育充実）
+  const feeY234 = getYearFee(tuition, 2);  // 2〜4年次合計
+  const noSup4y = get4yTotal(tuition);     // 4年間合計（入学金含む）
+
+  // JASSO授業料等減免：授業料のみが対象
+  // reductionRow.jy（万円） ← JASSOの上限 / 実際の授業料の低い方を適用
+  const jy_limit = reductionRow ? Math.round(reductionRow.jy * 10000) : 0;
+  const ny_limit = reductionRow ? Math.round((reductionRow.ny || 0) * 10000) : 0;
+
+  // 授業料減免額：JASSOの上限 vs 実際の授業料（低い方を適用）
+  const reductionTuitionY1   = reductionRow ? Math.min(jy_limit, tuition.tuitionY1)   : 0;
+  const reductionTuitionY234 = reductionRow ? Math.min(jy_limit, tuition.tuitionY234) : 0;
+  // 入学金減免
+  const reductionAdmission   = reductionRow ? Math.min(ny_limit, admission) : 0;
+
+  const kyufuAnnual = kyufuMonthly * 12;
+
+  // 支援なし（代表値：2〜4年次を参照値として使用）
+  const noSupAnnual    = feeY234;
+  const noSupAdmission = admission;
+
+  // 減免あり（授業料のみ減免・実験実習費と教育充実費は不変）
+  const withRedY1   = feeY1   - reductionTuitionY1;
+  const withRedY234 = feeY234 - reductionTuitionY234;
+  const withRedAdmission = admission - reductionAdmission;
+  const withRed4y = withRedAdmission + withRedY1 + withRedY234 * 3;
+  const withRedAnnual = withRedY234; // 代表値
+
+  // 減免＋給付奨学金
+  const withFullY1   = Math.max(0, withRedY1   - kyufuAnnual);
+  const withFullY234 = Math.max(0, withRedY234 - kyufuAnnual);
+  const withFull4y   = withRedAdmission + withFullY1 + withFullY234 * 3;
+  const withFullAnnual = withFullY234;
+
+  // 減免額の合計（表示用）
+  const reductionAnnual = reductionTuitionY234; // 代表値（2〜4年次の授業料減免額）
+
+  // Taiyo santei（貸与型算定基準額：生計維持者のみ・各種控除を適用）
+  const taiyoSantei = Math.max(0, e1TBase + e2TBase - ded);
+
+  // Taiyo results
+  const taiyoResults = CONFIG.taiyo.map(t => ({ ...t, ok: taiyoSantei <= t.threshold }));
+
+  // ── 併給調整（第一種奨学金と給付型の併用制限）──
+  // KG = 私立大学(univ)・private固定
+  // 第一種採用可能かつ給付型対象の場合のみ適用
+  const firstTypeOK = taiyoSantei < 189400; // 第一種採用可能
+  const benefitApplies = !!reductionRow;     // 給付型または減免の対象
+
+  let heikyuInfo = { applicable: false, amountText: null, note: null, ruleLabel: null };
+
+  if (firstTypeOK && benefitApplies) {
+    const isSpecial = ST.specialSupport === 'yes';
+    const commuteKey = ST.commute === 'jitakugai' ? 'jitakugai' : 'jitaku';
+    const _zoneLabel = { I:'第Ⅰ区分', II:'第Ⅱ区分', III:'第Ⅲ区分', IV:'第Ⅳ区分' };
+    const _kyufuZoneLabel = kyufuZone ? (_zoneLabel[kyufuZone] || '対象外') : '対象外';
+
+    // KIT私立大学・normalテーブル（給付型対象：第Ⅰ〜Ⅲ区分）
+    const normalTable = {
+      I:    { jitaku: { main:'0円', special: null }, jitakugai: { main:'0円', special: null } },
+      II:   { jitaku: { main:'0円', special: null }, jitakugai: { main:'0円', special: null } },
+      III:  { jitaku: { main:'21,700円', special:'20,000円 / 30,300円' }, jitakugai: { main:'19,200円', special: null } },
+      IV:   { jitaku: { main:'20,000円 / 34,500円', special:'20,000円 / 30,000円 / 44,500円' }, jitakugai: { main:'20,000円 / 30,000円 / 44,500円', special: null } }
+    };
+
+    // 多子世帯テーブル（私立大学）
+    // 第Ⅰ〜Ⅳ区分（多子世帯）：全て0円
+    // 多子世帯※1（給付型なし・授業料等減免のみ）：自宅0円・自宅外5,600円
+    const manyZoneTable = {
+      I:    { jitaku: '0円', jitakugai: '0円' },
+      II:   { jitaku: '0円', jitakugai: '0円' },
+      III:  { jitaku: '0円', jitakugai: '0円' },
+      IV:   { jitaku: '0円', jitakugai: '0円' },
+      many: { jitaku: '0円', jitakugai: '5,600円' } // ※1：給付型なし・減免のみ対象者
+    };
+
+    let ruleLabel = '', groupLabel = '', amountText = '', note = '';
+
+    if (hasManyChildren) {
+      if (kyufuZone) {
+        // 多子世帯 かつ 給付型対象（第Ⅰ〜Ⅳ区分）→ 各区分0円
+        const amt = manyZoneTable[kyufuZone]?.[commuteKey] ?? '0円';
+        amountText = amt;
+        ruleLabel = `${_kyufuZoneLabel}（多子世帯）`;
+        groupLabel = '多子世帯支援拡充対象（給付型受給中）';
+        note = '第Ⅰ〜Ⅳ区分の多子世帯は、給付型奨学金受給中のため第一種奨学金は利用できません（0円）。';
+      } else {
+        // 多子世帯 かつ 給付型非対象（授業料等減免のみ）→ 多子世帯※1
+        const amt = manyZoneTable['many'][commuteKey];
+        amountText = amt;
+        ruleLabel = '多子世帯（授業料等減免のみ）';
+        groupLabel = '多子世帯（授業料等減免のみ対象・※1）';
+        note = '（※1）給付型奨学金は支給されませんが、授業料等減免の支援により利用可能額が調整されます。資産額が5,000万円以上3億円未満により授業料等減免のみの支援となる者も同額です。';
+      }
+      heikyuInfo = { applicable: true, amountText, ruleLabel, groupLabel, note };
+
+    } else if (reductionZone === 'IV') {
+      // 第Ⅳ区分（私立理工農系・非多子）
+      const row = normalTable['IV'][commuteKey];
+      const amt = isSpecial && row.special ? row.special : row.main;
+      heikyuInfo = { applicable: true, amountText: amt, ruleLabel: '第Ⅳ区分（私立理工農系）', groupLabel: '給付型奨学金（授業料等減免）受給中', note: '※複数金額は選択可能な月額です。実際の金額はJASSOの審査によります。カッコ内は生活保護世帯同居・児童養護施設等の方が対象です。' };
+
+    } else if (kyufuZone && normalTable[kyufuZone]) {
+      // 通常の第Ⅰ〜Ⅲ区分
+      const row = normalTable[kyufuZone][commuteKey];
+      const amt = isSpecial && row.special ? row.special : row.main;
+      heikyuInfo = { applicable: true, amountText: amt, ruleLabel: `${_kyufuZoneLabel}`, groupLabel: '給付型奨学金受給中', note: amt === '0円' ? '第Ⅰ・Ⅱ区分は授業料等減免の対象となるため、第一種奨学金は利用できません（0円）。' : '※複数金額は選択可能な月額です。カッコ内は生活保護世帯同居・児童養護施設等の方が対象です。' };
+    }
+  }
+
+  return {
+    kyufuZone, kyufuOK, effZone: reductionZone,
+    kyufuMonthly, kyufuAnnual,
+    reductionAnnual, reductionAdmission, reductionRow, isStem,
+    reductionTuitionY1, reductionTuitionY234,
+    noSupAnnual, noSupAdmission, noSup4y,
+    feeY1, feeY234, tuition,
+    withRedAnnual, withRedAdmission, withRed4y,
+    withFullAnnual, withFull4y,
+    savingRed: noSup4y - withRed4y,
+    savingFull: noSup4y - withFull4y,
+    facInfo, tuition, nc, hasManyChildren,
+    kyufuSantei, taiyoSantei, taiyoResults,
+    single, isSeirei, earnerCount, isE2NonTax, isStudentNonTax,
+    e1T, e1C, e1KBase, e2KBase, sKBase,
+    e1TBase, e2TBase, ded,
+    supportAvailable: !!reductionRow,
+    heikyuInfo
+  };
+}
+
+// ─── RESULT RENDERER ───
+function calcResult() {
+  const root = byId('result-root');
+  if (!root) return;
+  if (!ST.faculty) {
+    root.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-3)"><div style="font-size:36px;margin-bottom:12px">🏫</div><p>学部が選択されていません</p></div>';
+    return;
+  }
+
+  let r;
+  try { r = computeAll(); }
+  catch(e) {
+    root.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-3)">計算中にエラーが発生しました。入力内容を確認してください。</div>';
+    console.error('computeAll error:', e);
+    return;
+  }
+
+  // ── 入力値確認パネル ──
+  let html = `<div style="background:#0d1a33;color:#a0c4ff;font-size:11px;font-family:monospace;padding:12px 16px;border-radius:10px;margin-bottom:14px;line-height:2;border:1px solid #1a3a6b">
+    <div style="color:#f0c040;font-weight:700;margin-bottom:4px">📋 読み取り値の確認</div>
+    <div>課税標準(e1): <b style="color:white">${r.e1T}</b> 　調整控除(e1): <b style="color:white">${r.e1C}</b></div>
+    <div>e1KBase: <b style="color:#6ff">${r.e1KBase}</b> 　e2KBase: <b style="color:#6ff">${r.e2KBase}</b> 　sKBase: <b style="color:#6ff">${r.sKBase}</b></div>
+    <div>isE2NonTax: <b style="color:white">${r.isE2NonTax}</b> 　isStudentNonTax: <b style="color:white">${r.isStudentNonTax}</b></div>
+    <div>貸与型控除(ded): <b style="color:#fa0">${r.ded}</b> 　earnerCount: <b style="color:white">${r.earnerCount}</b> 　nc: <b style="color:white">${r.nc}</b></div>
+    <div style="color:#f0c040;font-weight:700">給付型 支給算定基準額: <b style="font-size:14px">${r.kyufuSantei}</b>円（控除なし） → 区分: <b>${r.kyufuZone ?? '対象外'}</b></div>
+    <div>貸与型 算定基準額: <b>${r.taiyoSantei}</b>円（控除後）</div>
+  </div>`;
+
+  const dp = ST.dispPattern;
+  const showFull = dp === 'full';
+  const showTaiyo = true; // 常に給付型・貸与型両方を計算・表示
+
+  const zoneLabel = { I:'第Ⅰ区分', II:'第Ⅱ区分', III:'第Ⅲ区分', IV:'第Ⅳ区分', many:'多子世帯', null:'対象外' };
+  const zoneColor = { I:'var(--kit-green)', II:'var(--kit-blue)', III:'#c07800', IV:'var(--kit-gold)', many:'var(--kit-gold)' };
+  const currentZone  = r.effZone  ? (zoneLabel[r.effZone]  || '対象外') : '対象外';
+  const kyufuZoneLabel = r.kyufuZone ? (zoneLabel[r.kyufuZone] || '対象外') : '対象外';
+  const zColor = r.effZone ? (zoneColor[r.effZone] || 'var(--kit-blue)') : 'var(--text-3)';
+  const kColor = r.kyufuZone ? (zoneColor[r.kyufuZone] || 'var(--kit-blue)') : 'var(--text-3)';
+
+  // ── Hero ──
+  html += `
+  <div class="result-hero">
+    <div class="rh-eyebrow">関西学院大学 進学費用シミュレーション結果</div>
+    <div class="rh-fac">${r.facInfo.label}　<span style="font-size:12px;color:rgba(255,255,255,0.55)">${r.facInfo.sub}</span></div>
+    <div class="rh-zone" style="color:${zColor};border-color:${zColor}">${currentZone}</div>
+    <div class="rh-cols">
+      <div class="rh-col">
+        <div class="rh-col-label">授業料（年間）</div>
+        <div class="rh-col-val">${fmt(r.noSupAnnual)}</div>
+      </div>
+      <div class="rh-col">
+        <div class="rh-col-label">4年間合計（支援なし）</div>
+        <div class="rh-col-val">${fmtI(r.noSup4y)}</div>
+      </div>
+      ${r.supportAvailable ? `<div class="rh-col">
+        <div class="rh-col-label">4年間軽減額</div>
+        <div class="rh-col-val" style="color:var(--kit-green)">▲ ${fmtI(showFull ? r.savingFull : r.savingRed)}</div>
+      </div>` : ''}
+    </div>
+  </div>`;
+
+  // ── 判定区分カード ──
+  html += `<div class="card">
+    <div class="card-title">判定区分・支給算定基準額</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
+      <!-- 給付型奨学金 区分カード -->
+      ${(() => {
+        const isIV1or2 = r.kyufuZone === 'IV' && !r.hasManyChildren;
+        if (isIV1or2 && r.isStem) {
+          // 第Ⅳ区分・1子2子・理工農系：給付型月額は対象外、減免のみ → グレー
+          return `<div style="border:2px solid var(--border);border-radius:12px;padding:16px;text-align:center;background:var(--bg)">
+            <div style="font-size:10px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">給付型奨学金 区分</div>
+            <div style="font-size:clamp(20px,5vw,30px);font-weight:900;font-family:'Montserrat',sans-serif;color:var(--text-3)">対象外</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:6px">第Ⅳ区分（私立理工農系）<br>授業料等減免のみ利用可</div>
+            <div style="font-size:10px;color:var(--text-3);margin-top:6px;font-weight:700">給付型は多子世帯のみ対象</div>
+          </div>`;
+        } else if (isIV1or2 && !r.isStem) {
+          // 第Ⅳ区分・1子2子・非理工農系：両方対象外
+          return `<div style="border:2px solid var(--border);border-radius:12px;padding:16px;text-align:center;background:var(--bg)">
+            <div style="font-size:10px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">給付型奨学金 区分</div>
+            <div style="font-size:clamp(20px,5vw,30px);font-weight:900;font-family:'Montserrat',sans-serif;color:var(--text-3)">対象外</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:6px">第Ⅳ区分は私立理工農系のみ対象</div>
+          </div>`;
+        } else {
+          // 対象外ケースの判定
+          const kyufuAssetNG = r.kyufuZone && !r.kyufuOK; // 収入基準OK・資産基準NG
+          const kyufuIncomeNG = !r.kyufuZone;              // 収入基準超過
+
+          if (kyufuIncomeNG) {
+            // 収入基準超過 → グレー表示
+            return `<div style="border:2px solid var(--border);border-radius:12px;padding:16px;text-align:center;background:var(--bg)">
+              <div style="font-size:10px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">給付型奨学金 区分</div>
+              <div style="font-size:clamp(20px,5vw,30px);font-weight:900;font-family:'Montserrat',sans-serif;color:var(--text-3)">対象外</div>
+              <div style="font-size:10px;color:var(--text-3);margin-top:8px">支給算定基準額：${r.kyufuSantei.toLocaleString()}円</div>
+              <div style="margin-top:6px;font-size:10px;color:var(--text-3);font-weight:700">収入基準超過のため対象外</div>
+            </div>`;
+          } else if (kyufuAssetNG) {
+            // 資産基準超過 → グレー表示
+            return `<div style="border:2px solid var(--border);border-radius:12px;padding:16px;text-align:center;background:var(--bg)">
+              <div style="font-size:10px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">給付型奨学金 区分</div>
+              <div style="font-size:clamp(20px,5vw,30px);font-weight:900;font-family:'Montserrat',sans-serif;color:var(--text-3)">対象外</div>
+              <div style="font-size:10px;color:var(--text-3);margin-top:8px">支給算定基準額：${r.kyufuSantei.toLocaleString()}円</div>
+              <div style="margin-top:6px;font-size:10px;color:var(--text-3);font-weight:700">資産基準超過のため給付型対象外</div>
+            </div>`;
+          } else {
+            // 通常表示（利用可）
+            return `<div style="border:2px solid ${kColor};border-radius:12px;padding:16px;text-align:center;background:rgba(0,65,168,0.03)">
+              <div style="font-size:10px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">給付型奨学金 区分</div>
+              <div style="font-size:clamp(20px,5vw,30px);font-weight:900;font-family:'Montserrat',sans-serif;color:${kColor}">
+                ${kyufuZoneLabel}
+              </div>
+              <div style="font-size:11px;color:var(--text-3);margin-top:6px">支給算定基準額<br><strong style="color:var(--text-2)">${r.kyufuSantei.toLocaleString()}円</strong></div>
+            </div>`;
+          }
+        }
+      })()}
+
+      <!-- 授業料等減免 区分カード -->
+      ${(() => {
+        const assetOver3oku = ST.assetLevel === 'over3oku';
+        const asset5kTo3oku = ST.assetLevel === '5000to3oku';
+        // 第Ⅳ区分・1子2子・理工農系 かつ 資産基準OK（3億円未満）
+        const isIV1or2stem = r.kyufuZone === 'IV' && !r.hasManyChildren && r.isStem && !assetOver3oku;
+        const isManyAssetNG = r.hasManyChildren && asset5kTo3oku; // 多子・5000万〜3億：減免OKだが給付NG
+        if (isIV1or2stem) {
+          // 第Ⅳ区分・1子2子・理工農系・3億円未満：授業料等減免は利用可
+          const stemAsset5k = asset5kTo3oku; // 5000万〜3億円（給付型NG）
+          return `<div style="border:2px solid ${zoneColor['IV']||'var(--kit-gold)'};border-radius:12px;padding:16px;text-align:center;background:rgba(200,150,12,0.04)">
+            <div style="font-size:10px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">授業料等減免 区分</div>
+            <div style="font-size:clamp(18px,4vw,26px);font-weight:900;font-family:'Montserrat',sans-serif;color:${zoneColor['IV']||'var(--kit-gold)'};line-height:1.3">
+              第Ⅳ区分<br><small style="font-size:12px;font-weight:700">（私立理工農系）</small>
+            </div>
+            <div style="font-size:11px;color:${stemAsset5k ? 'var(--kit-red)' : 'var(--text-3)'};margin-top:6px;font-weight:${stemAsset5k ? '700' : '400'}">授業料等減免 利用可</div>
+            ${stemAsset5k ? `<div style="margin-top:4px;font-size:10px;color:var(--kit-red);font-weight:700">給付型は対象外（資産基準）</div>` : ''}
+          </div>`;
+        } else {
+          if (assetOver3oku) {
+            // 3億円以上 → 減免も対象外 → グレー表示
+            return `<div style="border:2px solid var(--border);border-radius:12px;padding:16px;text-align:center;background:var(--bg)">
+              <div style="font-size:10px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">授業料等減免 区分</div>
+              <div style="font-size:clamp(20px,5vw,30px);font-weight:900;font-family:'Montserrat',sans-serif;color:var(--text-3)">対象外</div>
+              <div style="margin-top:6px;font-size:10px;color:var(--text-3);font-weight:700">資産基準超過のため<br>授業料等減免の対象外</div>
+            </div>`;
+          } else if (isManyAssetNG) {
+            // 多子・5000万〜3億円：減免利用可・給付NG
+            return `<div style="border:2px solid ${zColor};border-radius:12px;padding:16px;text-align:center;background:rgba(0,65,168,0.03)">
+              <div style="font-size:10px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">授業料等減免 区分</div>
+              <div style="font-size:clamp(20px,5vw,30px);font-weight:900;font-family:'Montserrat',sans-serif;color:${zColor}">${currentZone}</div>
+              <div style="font-size:11px;color:var(--text-3);margin-top:6px">多子世帯として適用</div>
+              <div style="margin-top:6px;font-size:10px;color:var(--kit-red);font-weight:700">給付型は対象外・授業料等減免のみ利用可</div>
+            </div>`;
+          } else {
+            // 通常表示
+            return `<div style="border:2px solid ${r.effZone ? zColor : 'var(--border)'};border-radius:12px;padding:16px;text-align:center;background:${r.effZone ? 'rgba(0,65,168,0.03)' : 'var(--bg)'}">
+              <div style="font-size:10px;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">授業料等減免 区分</div>
+              <div style="font-size:clamp(20px,5vw,30px);font-weight:900;font-family:'Montserrat',sans-serif;color:${r.effZone ? zColor : 'var(--text-3)'}">
+                ${currentZone}
+              </div>
+              <div style="font-size:11px;color:var(--text-3);margin-top:6px">
+                ${r.hasManyChildren ? '多子世帯として適用' : r.effZone ? '給付型区分と同じ' : '対象外'}
+                ${!r.isStem && r.kyufuZone === 'IV' && !r.hasManyChildren ? '<br><span style="color:var(--kit-red)">私立理工農系のみ利用可</span>' : ''}
+              </div>
+            </div>`;
+          }
+        }
+      })()}
+    </div>
+  </div>`;
+
+  // ── Support not available ──
+  if (!r.supportAvailable) {
+    html += `
+    <div class="card" style="text-align:center;padding:28px">
+      <div style="font-size:15px;font-weight:700;color:var(--text-2);margin-bottom:8px">授業料等減免の対象外です</div>
+      <div style="font-size:12px;color:var(--text-3);line-height:1.8">
+        現在の家計状況では、国の高等教育修学支援制度（授業料等減免・給付型奨学金）の対象となりません。<br>
+        ${!r.kyufuZone ? 'JASSO給付型奨学金の家計基準を超えています。' : '第Ⅳ区分は私立理工農系のみ対象です（情報・デザイン系は対象外）。'}
+      </div>
+    </div>`;
+  }
+
+  // ── Left/Right compare ──
+  const rightLabel = showFull ? '減免＋給付奨学金' : '授業料減免のみ';
+  const rightAdmission = r.withRedAdmission;
+  const rightAnnual = showFull ? r.withFullAnnual : r.withRedAnnual;
+  const right4y = showFull ? r.withFull4y : r.withRed4y;
+  const saving = showFull ? r.savingFull : r.savingRed;
+
+  html += `<div class="compare-panel">`;
+
+  // 支援なし
+  html += `
+  <div class="cp-card">
+    <div class="cp-head no-sup">⬛ 支援なし</div>
+    <div class="cp-body">
+      <div class="cp-row">
+        <span class="cp-row-label">入学金</span>
+        <span class="cp-row-val no-support-col">${fmt(r.noSupAdmission)}</span>
+      </div>
+      <div class="cp-row">
+        <span class="cp-row-label">授業料（年間）</span>
+        <span class="cp-row-val no-support-col">${fmt(r.noSupAnnual)}</span>
+      </div>
+      <div class="cp-row">
+        <span class="cp-row-label">4年間合計</span>
+        <span class="cp-row-val no-support-col">${fmtI(r.noSup4y)}</span>
+      </div>
+    </div>
+  </div>`;
+
+  // 支援あり
+  const supClass = showFull ? 'with-full' : 'with-sup';
+  const supIcon = showFull ? '🎓' : '📋';
+  html += `
+  <div class="cp-card">
+    <div class="cp-head ${supClass}">${supIcon} ${rightLabel}</div>
+    <div class="cp-body">
+      <div class="cp-row">
+        <span class="cp-row-label">入学金</span>
+        <span class="cp-row-val" style="color:${r.supportAvailable ? (showFull ? 'var(--kit-green)' : 'var(--kit-blue)') : 'var(--text-3)'}">${fmt(rightAdmission)}</span>
+      </div>
+      <div class="cp-row">
+        <span class="cp-row-label">授業料（年間）</span>
+        <span class="cp-row-val" style="color:${r.supportAvailable ? (showFull ? 'var(--kit-green)' : 'var(--kit-blue)') : 'var(--text-3)'}">${fmt(rightAnnual)}</span>
+      </div>
+      ${showFull && r.kyufuOK && r.kyufuAnnual > 0 ? `
+      <div class="cp-row" style="font-size:11px;color:var(--kit-green)">
+        <span>うち給付奨学金（年）</span>
+        <span>▲ ${fmt(r.kyufuAnnual)}</span>
+      </div>` : ''}
+      <div class="cp-row">
+        <span class="cp-row-label">4年間合計</span>
+        <span class="cp-row-val" style="color:${r.supportAvailable ? (showFull ? 'var(--kit-green)' : 'var(--kit-blue)') : 'var(--text-3)'}">${fmtI(right4y)}</span>
+      </div>
+      ${r.supportAvailable ? `<div class="cp-saving ${showFull ? 'green' : 'blue'}">▲ ${fmtI(saving)} 軽減（4年間）</div>` : `<div class="cp-saving" style="background:var(--bg);color:var(--text-3)">支援対象外</div>`}
+    </div>
+  </div>
+  </div>`;
+
+  // ── Year table ──
+  html += `
+  <div class="card">
+    <div class="card-title">年次別 負担額早見表</div>
+    <div class="yr-table-wrap">
+      <table class="yr-table">
+        <thead>
+          <tr>
+            <th style="text-align:left">年次</th>
+            <th style="color:var(--text-3)">支援なし</th>
+            <th style="color:#C0392B">支援あり<br><span style="font-size:9px;font-weight:400">${showFull ? '減免＋給付後' : '減免後'}</span></th>
+            <th style="color:var(--kit-blue);font-size:10px">うち<br>授業料減免</th>
+            ${showFull ? `<th style="color:var(--kit-green);font-size:10px">うち<br>給付奨学金</th>` : ''}
+            <th style="color:var(--kit-green)">軽減額合計</th>
+          </tr>
+        </thead>
+        <tbody>
+  `;
+  for (let yr = 1; yr <= 4; yr++) {
+    const isFirst = yr === 1;
+    const ns      = (isFirst ? r.noSupAdmission : 0) + r.noSupAnnual;
+    const wr      = (isFirst ? r.withRedAdmission : 0) + r.withRedAnnual;
+    const wf      = (isFirst ? r.withRedAdmission : 0) + r.withFullAnnual;
+    const withMain = showFull ? wf : wr;   // 支援あり（メイン）
+    const redAmt   = ns - wr;              // 減免額
+    const kyufuAmt = r.kyufuAnnual;        // 給付額（年間）
+    const svTotal  = ns - withMain;        // 軽減額合計
+
+    html += `
+    <tr>
+      <td style="text-align:left">${yr}年次${isFirst ? '<br><span style="font-size:10px;color:var(--text-3)">(入学金含む)</span>' : ''}</td>
+      <td style="color:var(--text-3)">${fmt(ns)}</td>
+      <td style="color:${r.supportAvailable ? '#C0392B' : 'var(--text-3)'};font-weight:800;font-size:14px">
+        ${r.supportAvailable ? fmt(withMain) : fmt(ns)}
+      </td>
+      <td style="color:${r.supportAvailable && redAmt > 0 ? 'var(--kit-blue)' : 'var(--text-3)'};font-size:12px">
+        ${r.supportAvailable && redAmt > 0 ? '▲ ' + fmt(redAmt) : '—'}
+      </td>
+      ${showFull ? `<td style="color:${r.kyufuOK && kyufuAmt > 0 ? 'var(--kit-green)' : 'var(--text-3)'};font-size:12px">
+        ${r.kyufuOK && kyufuAmt > 0 ? '▲ ' + fmt(kyufuAmt) : '—'}
+      </td>` : ''}
+      <td class="saving-cell">${r.supportAvailable && svTotal > 0 ? '▲ ' + fmt(svTotal) : '—'}</td>
+    </tr>`;
+  }
+  // 合計行
+  const withMain4  = showFull ? r.withFull4y : r.withRed4y;
+  const redTotal4  = r.savingRed;
+  const kyufu4     = r.kyufuAnnual * 4;
+  const svTot      = showFull ? r.savingFull : r.savingRed;
+  html += `
+    <tr>
+      <td style="text-align:left">合計（4年間）</td>
+      <td style="color:var(--text-3)">${fmtI(r.noSup4y)}</td>
+      <td style="color:${r.supportAvailable ? '#C0392B' : 'var(--text-3)'};font-weight:900;font-size:15px">
+        ${r.supportAvailable ? fmtI(withMain4) : fmtI(r.noSup4y)}
+      </td>
+      <td style="color:${r.supportAvailable ? 'var(--kit-blue)' : 'var(--text-3)'};font-weight:700">
+        ${r.supportAvailable ? '▲ ' + fmtI(redTotal4) : '—'}
+      </td>
+      ${showFull ? `<td style="color:${r.kyufuOK && kyufu4 > 0 ? 'var(--kit-green)' : 'var(--text-3)'};font-weight:700">
+        ${r.kyufuOK && kyufu4 > 0 ? '▲ ' + fmtI(kyufu4) : '—'}
+      </td>` : ''}
+      <td class="saving-cell" style="font-size:15px">${r.supportAvailable ? '▲ ' + fmtI(svTot) : '—'}</td>
+    </tr>
+  </tbody></table></div></div>`;
+
+  // ── 支援制度の内訳（常に表示）──
+  html += `<div class="card"><div class="card-title">支援制度の内訳</div><div class="support-cards">`;
+
+  // 授業料等減免
+  const redOK = r.supportAvailable && (r.reductionAnnual > 0 || r.reductionAdmission > 0);
+  html += `
+  <div class="sup-card ${redOK ? 'active-blue' : 'inactive'}">
+    <div class="sup-label-area">
+      <div class="sup-title ${redOK ? 'blue' : 'gray'}">📋 授業料等減免</div>
+      <div class="sup-meta">区分：${currentZone} / 私立大学・${r.isStem ? '理工農系' : '情報デザイン系'}</div>
+    </div>
+    <div class="sup-amounts">
+      <div class="sup-amount-item">
+        <div class="sup-amount-label">入学金減免</div>
+        <div class="sup-amount-val ${redOK ? 'blue' : 'gray'}">${fmt(r.reductionAdmission)}</div>
+      </div>
+      <div class="sup-amount-item">
+        <div class="sup-amount-label">授業料減免（年）</div>
+        <div class="sup-amount-val ${redOK ? 'blue' : 'gray'}">${fmt(r.reductionAnnual)}</div>
+      </div>
+    </div>
+  </div>`;
+
+  // 給付型奨学金（常に表示）
+  const kyufuOK = r.kyufuOK && r.kyufuAnnual > 0;
+  html += `
+  <div class="sup-card ${kyufuOK ? 'active-green' : 'inactive'}">
+    <div class="sup-label-area">
+      <div class="sup-title ${kyufuOK ? 'green' : 'gray'}">🎓 給付型奨学金（JASSO）</div>
+      <div class="sup-meta">区分：${kyufuZoneLabel} / ${ST.commute === 'jitakugai' ? '自宅外通学' : '自宅通学'}${ST.specialSupport === 'yes' ? ' / 生活保護特例' : ''}</div>
+    </div>
+    <div class="sup-amounts">
+      <div class="sup-amount-item">
+        <div class="sup-amount-label">月額</div>
+        <div class="sup-amount-val ${kyufuOK ? 'green' : 'gray'}">${kyufuOK ? r.kyufuMonthly.toLocaleString() + '円' : '—'}</div>
+      </div>
+      <div class="sup-amount-item">
+        <div class="sup-amount-label">年間</div>
+        <div class="sup-amount-val ${kyufuOK ? 'green' : 'gray'}">${kyufuOK ? fmt(r.kyufuAnnual) : '—'}</div>
+      </div>
+      <div class="sup-amount-item">
+        <div class="sup-amount-label">4年間合計</div>
+        <div class="sup-amount-val ${kyufuOK ? 'green' : 'gray'}">${kyufuOK ? fmtI(r.kyufuAnnual * 4) : '—'}</div>
+      </div>
+    </div>
+  </div>`;
+  if (!kyufuOK) {
+    const reason = !r.kyufuZone ? '家計基準超過（支給算定基準額が第Ⅳ区分の上限を超えています）'
+      : ST.assetLevel !== 'under5000' ? '資産基準超過（5,000万円以上のため給付型は対象外）'
+      : '区分が確定していません';
+    html += `<div class="info-box" style="margin-top:0;font-size:11px">対象外の理由：${reason}</div>`;
+  }
+
+  // 計算過程（支援内訳カード内）
+  html += `
+  <details style="margin-top:14px">
+    <summary style="font-size:12px;font-weight:700;color:var(--kit-blue);cursor:pointer;padding:8px 0;user-select:none">
+      ▶ 支給算定基準額の計算過程を確認する
+    </summary>
+    <div style="margin-top:10px;border:1px solid var(--border);border-radius:10px;overflow:hidden;font-size:12px">
+      <div style="background:rgba(0,65,168,0.05);padding:10px 14px;font-size:11px;color:var(--kit-blue);font-weight:700">
+        計算式（給付型）：課税標準額 × 6% − ${r.isSeirei ? '（調整控除額＋調整額）×0.75' : '調整控除額＋調整額'}　→　100円未満切捨て　→　合算<br>
+        <span style="color:var(--text-3);font-weight:400">※ 給付型はひとり親・多子・私立自宅外控除を適用しません（貸与型のみ適用）</span>
+      </div>
+      <table style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr style="background:var(--bg)">
+            <th style="padding:8px 12px;text-align:left;font-size:11px;color:var(--text-2);border-bottom:1px solid var(--border)">対象者</th>
+            <th style="padding:8px 12px;text-align:right;font-size:11px;color:var(--text-2);border-bottom:1px solid var(--border)">課税標準×6%</th>
+            <th style="padding:8px 12px;text-align:right;font-size:11px;color:var(--text-2);border-bottom:1px solid var(--border)">控除後基準額</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid rgba(221,227,239,0.5)">生計維持者1</td>
+            <td style="padding:8px 12px;text-align:right;border-bottom:1px solid rgba(221,227,239,0.5);color:var(--text-2)">${Math.round(r.e1T * 0.06).toLocaleString()}円</td>
+            <td style="padding:8px 12px;text-align:right;border-bottom:1px solid rgba(221,227,239,0.5);font-weight:700">${r.e1KBase.toLocaleString()}円</td>
+          </tr>
+          ${r.earnerCount === 2
+            ? (r.isE2NonTax
+              ? `<tr><td style="padding:8px 12px;border-bottom:1px solid rgba(221,227,239,0.5)">生計維持者2</td><td style="padding:8px 12px;text-align:right;border-bottom:1px solid rgba(221,227,239,0.5);color:var(--text-3)">住民税非課税</td><td style="padding:8px 12px;text-align:right;border-bottom:1px solid rgba(221,227,239,0.5);color:var(--text-3)">0円</td></tr>`
+              : `<tr><td style="padding:8px 12px;border-bottom:1px solid rgba(221,227,239,0.5)">生計維持者2</td><td style="padding:8px 12px;text-align:right;border-bottom:1px solid rgba(221,227,239,0.5);color:var(--text-2)">${Math.round(getNum('e2-taxable') * 0.06).toLocaleString()}円</td><td style="padding:8px 12px;text-align:right;border-bottom:1px solid rgba(221,227,239,0.5);font-weight:700">${r.e2KBase.toLocaleString()}円</td></tr>`)
+            : ''}
+          ${r.isStudentNonTax
+            ? `<tr><td style="padding:8px 12px;border-bottom:1px solid rgba(221,227,239,0.5)">学生本人</td><td colspan="2" style="padding:8px 12px;text-align:right;border-bottom:1px solid rgba(221,227,239,0.5);color:var(--text-3)">住民税非課税（0円）</td></tr>`
+            : `<tr><td style="padding:8px 12px;border-bottom:1px solid rgba(221,227,239,0.5)">学生本人</td><td style="padding:8px 12px;text-align:right;border-bottom:1px solid rgba(221,227,239,0.5);color:var(--text-2)">${Math.round(getNum('s-taxable') * 0.06).toLocaleString()}円</td><td style="padding:8px 12px;text-align:right;border-bottom:1px solid rgba(221,227,239,0.5);font-weight:700">${r.sKBase.toLocaleString()}円</td></tr>`}
+          <tr style="background:rgba(0,65,168,0.02)">
+            <td style="padding:8px 12px;border-bottom:1px solid rgba(221,227,239,0.5);font-weight:700">合算基準額</td>
+            <td style="padding:8px 12px;border-bottom:1px solid rgba(221,227,239,0.5)"></td>
+            <td style="padding:8px 12px;text-align:right;border-bottom:1px solid rgba(221,227,239,0.5);font-weight:700">${(r.e1KBase + r.e2KBase + r.sKBase).toLocaleString()}円</td>
+          </tr>
+          <tr style="background:rgba(0,65,168,0.05)">
+            <td style="padding:10px 12px;font-weight:800;color:var(--kit-blue)">支給算定基準額</td>
+            <td style="padding:10px 12px"></td>
+            <td style="padding:10px 12px;text-align:right;font-weight:900;font-size:15px;color:var(--kit-blue)">${r.kyufuSantei.toLocaleString()}円</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="padding:8px 14px;background:var(--bg);font-size:11px;color:var(--text-3);line-height:1.9">
+        Ⅰ区分：100円未満　Ⅱ区分：25,600円未満　Ⅲ区分：51,300円未満　Ⅳ区分：154,500円未満
+      </div>
+    </div>
+  </details>`;
+
+  html += `</div></div>`;
+
+  // ── 貸与型（まなびシード準拠） ──
+  if (showTaiyo) {
+    const firstOk  = r.taiyoSantei < 189400;
+    const secondOk = r.taiyoSantei < 381500;
+    const bothOk   = r.taiyoSantei < 164600;
+    const firstWarn = r.heikyuInfo.applicable && firstOk;
+
+    // セグメント状態
+    function segState(eligible, isWarn) { return !eligible ? 'ng' : isWarn ? 'warn' : 'ok'; }
+    function segLabel(state) { return state==='ng' ? '対象外' : state==='warn' ? '⚠ 制限あり' : '採用可'; }
+    function segStyle(state, isFirst) {
+      if (state==='ng')   return 'background:#f1f3f5;color:var(--text-3);';
+      if (state==='warn') return isFirst
+        ? 'background:rgba(192,57,43,0.08);color:#b03020;'
+        : 'background:rgba(240,165,0,0.10);color:#b07800;';
+      return 'background:rgba(13,155,106,0.10);color:var(--kit-green);';
+    }
+    const bothState  = segState(bothOk,  firstWarn && bothOk);
+    const firstState = segState(firstOk, firstWarn);
+    const secondState= segState(secondOk, false);
+
+    const bothSegInner = (bothOk && firstWarn)
+      ? `<div class="tss-name">一種＋二種 併用</div><div class="tss-val" style="font-size:15px;font-weight:900">⚠ 制限あり</div>
+         <div class="tss-sub-detail"><span class="tss-sub-warn">一種 制限あり</span><span class="tss-sub-ok">二種 採用可</span></div>`
+      : `<div class="tss-name">一種＋二種 併用</div><div class="tss-val" style="font-size:15px;font-weight:900">${segLabel(bothState)}</div>`;
+
+    html += `<div class="card">
+      <div class="card-title" style="border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:16px">
+        貸与型奨学金 判定結果
+      </div>
+      <div style="text-align:center;margin-bottom:14px;font-size:13px;color:var(--text-2)">
+        貸与額算定基準額 <strong style="color:var(--text)">${r.taiyoSantei.toLocaleString()}円</strong>
+        ${!secondOk ? '　<span style="color:var(--kit-red)">基準超過のため全て対象外</span>' : ''}
+      </div>
+      <div class="taiyo-status-bar">
+        <div class="taiyo-status-seg" style="${segStyle(bothState,false)}">${bothSegInner}</div>
+        <div class="tss-divider"></div>
+        <div class="taiyo-status-seg" style="${segStyle(firstState,true)}">
+          <div class="tss-name">一種のみ<span style="font-size:9px;margin-left:2px">（無利子）</span></div>
+          <div class="tss-val" style="font-size:15px;font-weight:900">${segLabel(firstState)}</div>
+        </div>
+        <div class="tss-divider"></div>
+        <div class="taiyo-status-seg" style="${segStyle(secondState,false)}">
+          <div class="tss-name">二種のみ<span style="font-size:9px;margin-left:2px">（有利子）</span></div>
+          <div class="tss-val" style="font-size:15px;font-weight:900">${segLabel(secondState)}</div>
+        </div>
+      </div>
+      ${firstWarn ? `<div class="tss-warn-note">⚠ 一種は給付型 / 授業料等減免との併給調整により、月額に上限があります</div>` : ''}
+    </div>`;
+
+    // 第一種月額テーブル（KIT=私立大学）
+    const maxAmt = ST.commute === 'jitakugai' ? 64000 : 54000;
+    const otherAmts = ST.commute === 'jitakugai' ? [50000,40000,30000,20000] : [40000,30000,20000];
+    const fmtM = n => (n/10000)+'万円';
+    const othersStr = otherAmts.map(fmtM).join('・');
+    const canUseMax = bothOk && !r.heikyuInfo.applicable;
+
+    html += `<div class="card"><div class="card-title">貸与型 — 採用可否と月額目安
+      <span style="margin-left:6px;display:inline-flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <span style="display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(0,65,168,0.1);color:var(--kit-blue)">私立大学（KG）</span>
+        <span style="display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(0,65,168,0.1);color:var(--kit-blue)">${ST.commute==='jitakugai'?'自宅外通学':'自宅通学'}</span>
+        <span style="display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;background:${r.hasManyChildren?'rgba(13,155,106,0.12)':'rgba(0,65,168,0.1)'};color:${r.hasManyChildren?'var(--kit-green)':'var(--kit-blue)'}">${r.hasManyChildren?'多子世帯':'多子世帯でない'}</span>
+      </span>
+    </div>
+    <div class="taiyo-cards">`;
+
+    // 併用カード
+    let bothMonthlyHtml = '';
+    if (bothOk) {
+      const bothIsshuSection = firstWarn
+        ? `<div class="tc-monthly-label" style="margin-top:8px">第一種 — 併給調整後 限度額</div>
+           <div class="tc-monthly-range tc-monthly-warn">${r.heikyuInfo.amountText.replace(/\s*\/\s*/g,' / ')}<small style="font-size:11px;font-weight:600"> /月</small></div>
+           <div class="tc-monthly-note">その他：${othersStr}（最高額${fmtM(maxAmt)}は一種・二種併用者のみ）</div>`
+        : `<div class="tc-monthly-label" style="margin-top:8px">第一種 月額（選択制）</div>
+           <div class="tc-monthly-range">${fmtM(maxAmt)} <span class="tc-monthly-max-note">（最高額・一種二種併用者のみ）</span></div>
+           <div class="tc-monthly-others">${othersStr}</div>`;
+      bothMonthlyHtml = `<div class="tc-monthly">
+        ${bothIsshuSection}
+        <div class="tc-monthly-divider"></div>
+        <div class="tc-monthly-label" style="margin-top:8px">第二種 月額（選択制）</div>
+        <div class="tc-monthly-range">2万円 〜 12万円</div>
+        <div class="tc-monthly-note">2〜12万円を1万円単位で選択</div>
+      </div>`;
+    }
+
+    // 第一種カード
+    let firstMonthlyHtml = '';
+    if (firstOk) {
+      if (firstWarn) {
+        firstMonthlyHtml = `<div class="tc-monthly">
+          <div class="tc-monthly-label">併給調整後 利用限度額</div>
+          <div class="tc-monthly-range tc-monthly-warn">${r.heikyuInfo.amountText.replace(/\s*\/\s*/g,' / ')}<small style="font-size:11px;font-weight:600"> /月</small></div>
+          <div class="tc-monthly-note">その他の選択肢：${othersStr}</div>
+          <div class="tc-monthly-note">最高額 ${fmtM(maxAmt)} は一種・二種 併用採用者のみ</div>
+        </div>`;
+      } else if (!canUseMax) {
+        firstMonthlyHtml = `<div class="tc-monthly">
+          <div class="tc-monthly-label">月額（選択制）</div>
+          <div class="tc-monthly-range">${othersStr}</div>
+          <div class="tc-monthly-note">最高額 ${fmtM(maxAmt)} は一種・二種 併用採用者のみ利用可</div>
+        </div>`;
+      } else {
+        firstMonthlyHtml = `<div class="tc-monthly">
+          <div class="tc-monthly-label">月額（選択制）</div>
+          <div class="tc-monthly-range">${fmtM(maxAmt)} <span class="tc-monthly-max-note">（最高額）</span></div>
+          <div class="tc-monthly-others">${othersStr}</div>
+        </div>`;
+      }
+    }
+
+    // 第二種カード
+    const secondMonthlyHtml = secondOk ? `<div class="tc-monthly">
+      <div class="tc-monthly-label">月額（選択制）</div>
+      <div class="tc-monthly-range">2万円 〜 12万円</div>
+      <div class="tc-monthly-note">2〜12万円を1万円単位で選択</div>
+    </div>` : '';
+
+    const warnClassBoth  = 'tc-warn-yellow';
+    const warnClassFirst = 'tc-warn';
+    const badgeBoth  = bothOk  ? (firstWarn && bothOk  ? '⚠ 制限あり' : '採用可') : '対象外';
+    const badgeFirst = firstOk ? (firstWarn             ? '利用制限あり<br><span style="font-size:11px;font-weight:500">（併給調整）</span>' : '採用可') : '対象外';
+    const badgeSecond= secondOk? '採用可' : '対象外';
+
+    html += `<div class="taiyo-card ${bothOk ? (firstWarn&&bothOk?warnClassBoth:'tc-ok') : 'tc-ng'}">
+      <div class="tc-name">第一種・第二種 併用</div>
+      <div class="tc-badge">${badgeBoth}</div>
+      <div class="tc-threshold">基準額 164,600円</div>
+      ${bothMonthlyHtml}
+    </div>
+    <div class="taiyo-card ${firstOk ? (firstWarn?warnClassFirst:'tc-ok') : 'tc-ng'}">
+      <div class="tc-name">第一種のみ（無利子）</div>
+      <div class="tc-badge">${badgeFirst}</div>
+      <div class="tc-threshold">基準額 189,400円</div>
+      ${firstMonthlyHtml}
+    </div>
+    <div class="taiyo-card ${secondOk ? 'tc-ok' : 'tc-ng'}">
+      <div class="tc-name">第二種のみ（有利子）</div>
+      <div class="tc-badge">${badgeSecond}</div>
+      <div class="tc-threshold">基準額 381,500円</div>
+      ${secondMonthlyHtml}
+    </div>`;
+
+    html += `</div></div>`;
+
+    // 併給調整詳細
+    if (r.heikyuInfo.applicable) {
+      html += `<div class="card"><div class="card-title">貸与型 — 第一種奨学金の併給調整</div>
+        <div class="heikyu-box">
+          <div class="heikyu-box-head">
+            <div>
+              <div class="heikyu-alert">⚠ 第一種奨学金は要確認</div>
+              <div class="heikyu-title">第一種奨学金は併給調整がかかります</div>
+              <div class="heikyu-desc">給付型奨学金または授業料等減免の対象となるため、第一種奨学金は通常どおりではなく、<strong>併給調整後の利用可能月額</strong>で確認してください。</div>
+            </div>
+            <div>
+              <div style="font-size:11px;color:#99504c;text-align:right;margin-bottom:4px">利用限度額</div>
+              <div class="heikyu-value">${r.heikyuInfo.amountText.replace(/\s*\/\s*/g,'\n')}<small style="font-size:14px;font-family:'Noto Sans JP',sans-serif;font-weight:700"> /月</small></div>
+            </div>
+          </div>
+          <div class="heikyu-meta">
+            <div class="heikyu-meta-card">
+              <div class="heikyu-meta-label">適用ルール</div>
+              <div class="heikyu-meta-value">${r.heikyuInfo.groupLabel}</div>
+            </div>
+            <div class="heikyu-meta-card">
+              <div class="heikyu-meta-label">判定区分</div>
+              <div class="heikyu-meta-value">${r.heikyuInfo.ruleLabel || '併給調整'}</div>
+            </div>
+            <div class="heikyu-meta-card">
+              <div class="heikyu-meta-label">学校条件</div>
+              <div class="heikyu-meta-value">私立大学（関西学院大学）/ ${ST.commute==='jitakugai'?'自宅外通学':'自宅通学'}</div>
+            </div>
+            <div class="heikyu-meta-card">
+              <div class="heikyu-meta-label">表示の考え方</div>
+              <div class="heikyu-meta-value">0円の場合も、そのまま <strong>0円</strong> と表示しています。</div>
+            </div>
+          </div>
+          <div class="heikyu-subnote">${r.heikyuInfo.note}</div>
+        </div>
+      </div>`;
+    }
+
+    // 貸与型計算過程（折りたたみ）
+    const e1TExpr = r.isSeirei
+      ? `${r.e1T.toLocaleString()}×6% − (${r.e1C.toLocaleString()}×0.75)`
+      : `${r.e1T.toLocaleString()}×6% − ${r.e1C.toLocaleString()}`;
+    const e2T = getNum('e2-taxable');
+    const e2C = getNum('e2-adjust-ctrl');
+    const e2TExpr = r.isSeirei
+      ? `${e2T.toLocaleString()}×6% − (${e2C.toLocaleString()}×0.75)`
+      : `${e2T.toLocaleString()}×6% − ${e2C.toLocaleString()}`;
+    const totalTBase = r.e1TBase + r.e2TBase;
+
+    const dedRows = [];
+    if (r.single) dedRows.push({name:'ひとり親控除', expr:'固定', amount:40000});
+    if (r.nc>=3)  dedRows.push({name:`多子控除（${r.nc}人）`, expr:`${Math.max(0,r.nc-2)}人分×40,000`, amount:Math.max(0,r.nc-2)*40000});
+    if (byId('paway-check')?.classList.contains('on')) dedRows.push({name:'私立自宅外控除', expr:'在学採用のみ', amount:22000});
+
+    html += `<div class="card" style="border:1px solid var(--border)">
+      <details>
+        <summary style="font-size:12px;font-weight:700;color:var(--kit-green);cursor:pointer;padding:4px 0;user-select:none;list-style:none;display:flex;align-items:center;gap:6px">
+          <span>▶</span> 貸与型 — 貸与額算定基準額の計算過程
+        </summary>
+        <div style="margin-top:14px">
+          <div class="formula-box">
+            <div class="formula-title">📐 住民税基準額の計算式${r.isSeirei?' （政令指定都市）':''}</div>
+            <div class="formula-expr">${r.isSeirei ? '課税標準額 × 6%  −  （調整控除額 × 0.75）' : '課税標準額 × 6%  −  調整控除額'}</div>
+            <div class="formula-note">※ 100円未満切り捨て　　※ 生計維持者のみ（学生本人の収入は不要）</div>
+          </div>
+          <div class="calc-row-formula"><span class="cfr-label">生計維持者1</span><span class="cfr-expr">${e1TExpr}</span><span class="cfr-result">= ${r.e1TBase.toLocaleString()}円</span></div>
+          ${r.earnerCount===2
+            ? r.isE2NonTax
+              ? `<div class="calc-row-formula"><span class="cfr-label">生計維持者2</span><span class="cfr-expr">住民税非課税</span><span class="cfr-result">= 0円</span></div>`
+              : `<div class="calc-row-formula"><span class="cfr-label">生計維持者2</span><span class="cfr-expr">${e2TExpr}</span><span class="cfr-result">= ${r.e2TBase.toLocaleString()}円</span></div>`
+            : ''}
+          <div class="calc-row-formula"><span class="cfr-label">合算基準額</span><span class="cfr-expr">${r.e1TBase.toLocaleString()} + ${r.e2TBase.toLocaleString()}</span><span class="cfr-result">= ${totalTBase.toLocaleString()}円</span></div>
+          ${dedRows.length > 0
+            ? dedRows.map(d=>`<div class="calc-row-formula deduct-row"><span class="cfr-label">${d.name}</span><span class="cfr-expr">${d.expr}</span><span class="cfr-result">− ${d.amount.toLocaleString()}円</span></div>`).join('')
+            : `<div class="calc-row-formula"><span class="cfr-label">控除</span><span class="cfr-expr">適用なし</span><span class="cfr-result">− 0円</span></div>`}
+          <div class="calc-row-formula calc-row-total"><span class="cfr-label">貸与額算定基準額</span><span class="cfr-expr">${totalTBase.toLocaleString()} − ${r.ded.toLocaleString()}</span><span class="cfr-result">= ${r.taiyoSantei.toLocaleString()}円</span></div>
+          <div style="margin-top:10px;padding:8px 12px;background:var(--bg);border-radius:8px;font-size:11px;color:var(--text-3);line-height:1.9">
+            第一種＋第二種併用：164,600円未満　第一種（無利子）：189,400円未満　第二種（有利子）：381,500円未満
+          </div>
+        </div>
+      </details>
+    </div>`;
+  }
+
+  // ── Notice ──
+  html += `
+  <div class="card">
+    <div class="card-title">ご確認ください</div>
+    <div class="notice-box">
+      <p>・学費は2026年度入学生に適用される金額です（4年間一括明示方式）。</p>
+      <p>・授業料等減免・給付型奨学金の額はJASSO基準に基づく目安です。実際の採否・金額は大学・JASSOの審査によります。</p>
+      <p>・後援会費・生協出資金・研究雑誌費などその他諸費は含まれていません。</p>
+      <p>・詳細は <a href="https://www.kwansei.ac.jp/campuslife/fees/undergraduate_2026.html" target="_blank">関西学院大学 学費ページ</a> および <a href="https://www.jasso.go.jp" target="_blank">JASSO公式サイト</a> をご確認ください。</p>
+    </div>
+  </div>`;
+
+  root.innerHTML = html;
+}
+
+// ─── INIT ───
+document.addEventListener('DOMContentLoaded', () => {
+  // num-children live update
+  byId('num-children').addEventListener('input', () => {
+    updateTashiBox();
+    syncDeductions();
+  });
+  // adoption-type
+  byId('adoption-type').addEventListener('change', syncDeductions);
+  // initial state
+  syncAdjust3Visibility();
+  syncTaiyoCard();
+  syncStudentBlock();
+  syncDeductions();
+  updateTabs(1);
+});
+</script>
+
+</body>
+</html>
